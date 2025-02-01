@@ -1,4 +1,4 @@
-package com.example.wallpaperstack
+package com.example.wallpaperstack.presentation
 
 import android.os.Bundle
 import android.util.Log
@@ -7,15 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.wallpaperstack.R
 import com.example.wallpaperstack.base.ViewModelFactory
 import com.example.wallpaperstack.data.repository.WallpapersRepository
-import com.example.wallpaperstack.presentation.WallpaperViewModel
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class MainActivity : AppCompatActivity() {
 
