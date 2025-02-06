@@ -3,9 +3,9 @@ package com.example.wallpaperstack.di.components
 import android.app.Application
 import com.example.wallpaperstack.App
 import com.example.wallpaperstack.di.modules.ActivityModule
-import com.example.wallpaperstack.di.modules.MapperModule
 import com.example.wallpaperstack.di.modules.NetworkModule
 import com.example.wallpaperstack.di.modules.RepositoryModule
+import com.example.wallpaperstack.di.modules.UseCaseModule
 import com.example.wallpaperstack.di.modules.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -20,7 +20,7 @@ import javax.inject.Singleton
         ActivityModule::class,
         NetworkModule::class,
         ViewModelModule::class,
-        MapperModule::class]
+        UseCaseModule::class]
 )
 
 interface AppComponent {

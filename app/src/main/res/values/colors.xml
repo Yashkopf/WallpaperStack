@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="default_button_state">#161616</color>
+    <color name="select_button_state">#525252</color>
 </resources>

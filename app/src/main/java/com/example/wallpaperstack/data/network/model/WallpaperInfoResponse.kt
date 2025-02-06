@@ -1,5 +1,7 @@
 package com.example.wallpaperstack.data.network.model
 
+import com.example.wallpaperstack.domain.model.Sorting
+import com.example.wallpaperstack.domain.model.Tag
 import com.example.wallpaperstack.domain.model.Thumbs
 import com.google.gson.annotations.SerializedName
 
@@ -28,6 +30,9 @@ data class WallpaperInfoResponse (
     @SerializedName("category")
     val category: String,
 
+    @SerializedName("sorting")
+    val sorting: String,
+
     @SerializedName("dimensionX")
     val dimensionX: Int,
 
@@ -46,8 +51,8 @@ data class WallpaperInfoResponse (
     @SerializedName("fileType")
     val fileType: String,
 
-    @SerializedName("createdAt")
-    val createdAt: String,
+    @SerializedName("created_at")
+    val createdAt: String?,
 
     @SerializedName("colors")
     val colors: List<String>,
@@ -56,5 +61,8 @@ data class WallpaperInfoResponse (
     val path: String,
 
     @SerializedName("thumbs")
-    val thumbs: Thumbs
+    val thumbs: Thumbs,
+
+    @SerializedName("tag")
+    val tag: Tag
 )

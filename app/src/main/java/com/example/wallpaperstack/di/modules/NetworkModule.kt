@@ -1,6 +1,7 @@
 package com.example.wallpaperstack.di.modules
 
-import android.util.Config
+import com.example.wallpaperstack.BuildConfig
+import com.example.wallpaperstack.data.network.AuthInterceptor
 import com.example.wallpaperstack.data.network.api.WallpaperApi
 import dagger.Module
 import dagger.Provides
@@ -16,27 +17,25 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+    fun provideLoggingInterceptor(): AuthInterceptor {
+        return AuthInterceptor(BuildConfig.API_KEY)
     }
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
             .readTimeout(45L, TimeUnit.SECONDS)
             .connectTimeout(45L, TimeUnit.SECONDS)
             .writeTimeout(45L, TimeUnit.SECONDS)
-            .addInterceptor(interceptor)
+            .addInterceptor(provideLoggingInterceptor())
             .build()
 
     @Singleton
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(WallpaperApi.BASE_URL)  // Replace with your actual API base URL
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

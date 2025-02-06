@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -17,15 +18,26 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField ("String", "API_KEY", "\"${project.properties["API_KEY"]}\"")
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            buildConfigField("String", "BASE_URL", "\"https://wallhaven.cc\"")
+
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField ("String", "BASE_URL", "\"https://wallhaven.cc\"")
         }
     }
     compileOptions {
@@ -37,6 +49,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     kapt {
         generateStubs = true
@@ -51,8 +64,16 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
-    implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    kapt ("com.github.bumptech.glide:compiler:4.14.2")
+    // transformation image for Glide
+    implementation ("jp.wasabeef:glide-transformations:4.3.0")
+
+    //pagination
+    implementation("androidx.paging:paging-runtime:3.3.2")
+    implementation("androidx.paging:paging-compose:3.3.2")
 
     // dagger android
     kapt ("com.google.dagger:dagger-android-processor:2.46.1")

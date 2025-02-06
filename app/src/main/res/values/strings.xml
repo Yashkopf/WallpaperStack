@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">WallpaperStack</string>
+    <string name="category_top">top list</string>
+    <string name="category_relevance">relevance</string>
+    <string name="category_random">random</string>
+    <string name="category_favorite">favorite</string>
+    <string name="category_views">views</string>
+    <string name="category_date_add">newest</string>
 </resources>

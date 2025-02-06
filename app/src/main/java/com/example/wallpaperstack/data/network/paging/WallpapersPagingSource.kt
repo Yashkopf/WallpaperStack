@@ -1,0 +1,37 @@
+package com.example.wallpaperstack.data.network.paging
+
+import android.util.Log
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import com.example.wallpaperstack.data.mappers.toWallpapersInfo
+import com.example.wallpaperstack.data.network.api.WallpaperApi
+import com.example.wallpaperstack.domain.model.Sorting
+import com.example.wallpaperstack.domain.model.WallpaperInfo
+import retrofit2.HttpException
+
+class WallpapersPagingSource(
+    private val wallpaperApi: WallpaperApi,
+    private val sorting: Sorting
+) : PagingSource<Int, WallpaperInfo>() {
+
+    override fun getRefreshKey(state: PagingState<Int, WallpaperInfo>): Int? {
+        val anchorPosition = state.anchorPosition ?: return null
+        val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
+        return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WallpaperInfo> {
+        val pageNumber = params.key ?: 1
+
+        val response = wallpaperApi.getListOfWallpapers(page = pageNumber, sorting = sorting.value)
+        if (response.isSuccessful) {
+            val result = checkNotNull(response.body()?.data).map {it.toWallpapersInfo()}
+            val prevKey = if (pageNumber > 1) pageNumber -1 else null
+            val nextKey = if (result.isEmpty()) null else pageNumber +1
+
+            return LoadResult.Page(result, prevKey, nextKey)
+        }else {
+            return LoadResult.Error(HttpException(response))
+        }
+    }
+}

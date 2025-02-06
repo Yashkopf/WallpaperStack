@@ -1,31 +1,32 @@
 package com.example.wallpaperstack.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import com.example.wallpaperstack.data.network.api.WallpaperApi
-import com.example.wallpaperstack.data.network.mappers.WallpapersResponseToEntityMapper
-import com.example.wallpaperstack.data.network.utils.safeApiCall
-import com.example.wallpaperstack.domain.model.WallpaperInfo
-import com.example.wallpaperstack.domain.model.Wallpapers
+import com.example.wallpaperstack.data.network.paging.WallpapersPagingSource
+import com.example.wallpaperstack.domain.model.Sorting
 import javax.inject.Inject
 
 class WallpapersRepositoryImpl @Inject constructor(
     private val api: WallpaperApi,
-    private val mapper: WallpapersResponseToEntityMapper
-): WallpapersRepository {
+) : WallpapersRepository {
 
-
-    override suspend fun getWallpapersList(): Result<Wallpapers> {
-        return safeApiCall {
-            Result.success(api.getListOfWallpapers()).map { value ->
-                mapper.mapWallpapersResponseToEntity(value)
+    override fun getWallpapersList(sorting: Sorting) =
+        Pager(
+            config = PagingConfig(
+                pageSize = 24,
+                maxSize = 72,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                WallpapersPagingSource(api, sorting)
             }
-        }
-    }
+        ).liveData
 
-    override suspend fun getWallpaperInfo(wallpaperId: Int): Result<WallpaperInfo> {
-        return safeApiCall {
-            Result.success(api.getWallpaper(wallpaperId)).map{ value ->
-                mapper.mapWallpaperInfoResponseToEntity(value)
-            }
-        }
-    }
 }
+
+
+
+
+

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 data class WallpapersResponse (
 
     @SerializedName("data")
-    val data: List<WallpaperInfo>,
+    val data: List<WallpaperInfoResponse>,
 
     @SerializedName("meta")
     val meta: MetaData
