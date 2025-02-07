@@ -1,23 +1,21 @@
 package com.example.wallpaperstack.di.modules
 
-import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.domain.usecases.getWallpaperInfo.GetWallpaperInfoUseCase
 import com.example.wallpaperstack.domain.usecases.getWallpaperInfo.GetWallpaperInfoUseCaseImpl
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetWallpaperListUseCase
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetWallpaperListUseCaseImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
-class UseCaseModule {
+@InstallIn(SingletonComponent::class)
+abstract class UseCaseModule {
 
-    @Provides
-    fun getWallpaperInfoUseCase(repository: WallpapersRepository): GetWallpaperInfoUseCase {
-        return GetWallpaperInfoUseCaseImpl(repository)
-    }
+    @Binds
+    abstract fun getWallpaperInfoUseCase(getWallpaperInfoUseCaseImpl: GetWallpaperInfoUseCaseImpl): GetWallpaperInfoUseCase
 
-    @Provides
-    fun getWallpaperListUseCase(repository: WallpapersRepository): GetWallpaperListUseCase {
-        return GetWallpaperListUseCaseImpl(repository)
-    }
+    @Binds
+    abstract fun getWallpaperListUseCase(getWallpaperListUseCaseImpl: GetWallpaperListUseCaseImpl): GetWallpaperListUseCase
 }

@@ -16,7 +16,6 @@ class WallpaperAdapter() : PagingDataAdapter<WallpaperInfo, WallpaperViewHolder>
     WallpaperDiffCallback()
 ) {
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,

@@ -1,16 +1,16 @@
 package com.example.wallpaperstack.di.modules
 
-import com.example.wallpaperstack.data.network.api.WallpaperApi
 import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.data.repository.WallpapersRepositoryImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
-class RepositoryModule {
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule {
 
-    @Provides
-    fun provideRepository(api: WallpaperApi): WallpapersRepository {
-        return WallpapersRepositoryImpl(api)
-    }
+    @Binds
+    abstract fun bindRepository(wallpapersRepositoryImpl: WallpapersRepositoryImpl): WallpapersRepository
 }
