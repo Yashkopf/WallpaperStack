@@ -1,8 +1,7 @@
 package com.example.wallpaperstack
 
-import android.app.Activity
 import android.app.Application
-import com.example.wallpaperstack.di.components.AppComponent
+import androidx.fragment.app.Fragment
 import com.example.wallpaperstack.di.components.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

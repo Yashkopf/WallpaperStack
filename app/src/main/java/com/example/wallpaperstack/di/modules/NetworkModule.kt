@@ -17,8 +17,16 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideLoggingInterceptor(): AuthInterceptor {
+    fun provideAuthInterceptor(): AuthInterceptor {
         return AuthInterceptor(BuildConfig.API_KEY)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
     }
 
     @Singleton
@@ -28,6 +36,7 @@ class NetworkModule {
             .readTimeout(45L, TimeUnit.SECONDS)
             .connectTimeout(45L, TimeUnit.SECONDS)
             .writeTimeout(45L, TimeUnit.SECONDS)
+            .addInterceptor(provideAuthInterceptor())
             .addInterceptor(provideLoggingInterceptor())
             .build()
 

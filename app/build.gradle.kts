@@ -18,7 +18,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField ("String", "API_KEY", "\"${project.properties["API_KEY"]}\"")
     }
 
     buildTypes {
@@ -29,6 +28,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"https://wallhaven.cc\"")
+            buildConfigField ("String", "API_KEY", "\"${project.properties["API_KEY"]}\"")
 
         }
         release {
