@@ -1,9 +1,7 @@
 package com.example.wallpaperstack.data.network
 
-import com.example.wallpaperstack.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
 
 class AuthInterceptor(private val authToken: String) : Interceptor {
 
@@ -12,7 +10,7 @@ class AuthInterceptor(private val authToken: String) : Interceptor {
 
         val requestBuilder = originalRequest.newBuilder()
             .addHeader("accept", "application/json")
-            .addHeader("Authorization", "Bearer {${BuildConfig.API_KEY}}")
+            .addHeader("Authorization", "Bearer $authToken")
 
         val request = requestBuilder.build()
         return chain.proceed(request)

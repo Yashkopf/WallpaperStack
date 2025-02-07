@@ -41,7 +41,6 @@ class WallpaperAdapter() : PagingDataAdapter<WallpaperInfo, WallpaperViewHolder>
                         .build())
                 tvFavorites.text = wallpaper.favorites.toString()
                 tvCategory.text = formatDate(wallpaper.createdAt.toString())
-
             }
             Glide.with(view.context)
                 .load(wallpaper.thumbs.original)
