@@ -1,5 +1,9 @@
 package com.example.wallpaperstack.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class WallpaperInfo (
     val id: String,
     val url: String,
@@ -21,4 +25,4 @@ data class WallpaperInfo (
     val path: String,
     val thumbs: Thumbs,
     val tag: Tag?
-)
+): Parcelable
