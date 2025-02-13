@@ -81,7 +81,14 @@ dependencies {
     implementation ("com.google.dagger:dagger-android:2.46.1")
     implementation ("com.google.dagger:dagger-android-support:2.46.1")
 
-
+    //coin
+    implementation("io.insert-koin:koin-android:4.0.2")
+    // Java Compatibility
+    implementation("io.insert-koin:koin-android-compat:4.0.2")
+    // Navigation Graph
+    implementation("io.insert-koin:koin-androidx-navigation:4.0.2")
+    // App Startup
+//    implementation("io.insert-koin:koin-androidx-startup:4.0.2")
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)

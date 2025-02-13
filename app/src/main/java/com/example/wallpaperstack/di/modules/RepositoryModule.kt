@@ -1,16 +1,13 @@
 package com.example.wallpaperstack.di.modules
 
+import com.example.wallpaperstack.data.network.api.WallpaperApi
 import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.data.repository.WallpapersRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+val repositoryModule = module {
 
-    @Binds
-    abstract fun bindRepository(wallpapersRepositoryImpl: WallpapersRepositoryImpl): WallpapersRepository
+    single<WallpapersRepository> {
+        WallpapersRepositoryImpl(get<WallpaperApi>())
+    }
 }

@@ -1,19 +1,15 @@
 package com.example.wallpaperstack.data.repository
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.wallpaperstack.data.network.api.WallpaperApi
 import com.example.wallpaperstack.data.network.paging.WallpapersPagingSource
 import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
-import javax.inject.Inject
 
-class WallpapersRepositoryImpl @Inject constructor(
+class WallpapersRepositoryImpl (
     private val api: WallpaperApi,
 ) : WallpapersRepository {
 
