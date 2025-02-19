@@ -1,6 +1,7 @@
 package com.example.wallpaperstack.presentation.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import com.bumptech.glide.Glide
@@ -13,7 +14,7 @@ import com.google.android.material.shape.RoundedCornerTreatment
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class WallpaperAdapter(private val onItemClick: (WallpaperInfo) -> Unit) :
+class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
     PagingDataAdapter<WallpaperInfo, WallpaperViewHolder>(
         WallpaperDiffCallback()
     ) {
@@ -44,14 +45,20 @@ class WallpaperAdapter(private val onItemClick: (WallpaperInfo) -> Unit) :
                 tvFavorites.text = wallpaper.favorites.toString()
                 tvCategory.text = formatDate(wallpaper.createdAt.toString())
                 root.setOnClickListener { v ->
-                    onItemClick(wallpaper)
+                    onItemClick(wallpaper, v)
                 }
             }
+            
             Glide.with(view.context)
                 .load(wallpaper.thumbs.original)
                 .transition(withCrossFade())
                 .placeholder(R.color.select_button_state)
+                .thumbnail(
+                    Glide.with(view.context)
+                        .load(R.drawable.baseline_bedtime_24)
+                )
                 .into(view)
+
         }
     }
 }

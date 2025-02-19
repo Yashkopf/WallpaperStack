@@ -8,6 +8,6 @@ import org.koin.dsl.module
 val repositoryModule = module {
 
     single<WallpapersRepository> {
-        WallpapersRepositoryImpl(get<WallpaperApi>())
+        WallpapersRepositoryImpl(get())
     }
 }

@@ -8,6 +8,6 @@ import org.koin.dsl.module
 val useCaseModule = module {
 
     factory <GetWallpaperListUseCase>{
-        GetWallpaperListUseCaseImpl(get<WallpapersRepository>())
+        GetWallpaperListUseCaseImpl(get())
     }
 }

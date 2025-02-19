@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
@@ -91,9 +92,9 @@ class HomeFragment : Fragment() {
         recyclerView = binding?.rvWallpapers
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
-        val adapter = WallpaperAdapter(onItemClick = {
-            launchDetailFragment(it)
-        })
+        val adapter = WallpaperAdapter{ id, clickedView ->
+            launchDetailFragment(id, clickedView)
+        }
 
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.adapter = adapter
@@ -133,16 +134,26 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun launchDetailFragment(id: Parcelable) {
+    fun launchDetailFragment(id: Parcelable, clickedView: View) {
         val animation = NavOptions.Builder()
-        animation.setEnterAnim(R.anim.slide_left)
-            .setExitAnim(R.anim.slide_right)
-            .setPopEnterAnim(R.anim.slide_left)
-            .setPopExitAnim(R.anim.slide_right)
+        animation.setEnterAnim(R.anim.zoom_enter)
+            .setExitAnim(R.anim.zoom_exit)
+            .setPopExitAnim(R.anim.zoom_exit)
+
+        val location = IntArray(2)
+        clickedView.getLocationOnScreen(location)
+
+        val startX = location[0].toFloat() + clickedView.width / 2
+        val startY = location[1].toFloat() + clickedView.height / 2
+
+        // Pass position as arguments
+        val args = DetailFragment.makeArgs(id).apply {
+            putFloat("pivotX", startX)
+            putFloat("pivotY", startY)
+        }
         findNavController().navigate(
             R.id.detailFragment,
-            DetailFragment.makeArgs(id),
-            animation.build()
+            args
         )
     }
 
