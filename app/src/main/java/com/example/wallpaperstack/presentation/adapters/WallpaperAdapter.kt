@@ -48,17 +48,12 @@ class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
                     onItemClick(wallpaper, v)
                 }
             }
-            
+
             Glide.with(view.context)
                 .load(wallpaper.thumbs.original)
                 .transition(withCrossFade())
-                .placeholder(R.color.select_button_state)
-                .thumbnail(
-                    Glide.with(view.context)
-                        .load(R.drawable.baseline_bedtime_24)
-                )
+                .placeholder(R.color.shimmer_background)
                 .into(view)
-
         }
     }
 }

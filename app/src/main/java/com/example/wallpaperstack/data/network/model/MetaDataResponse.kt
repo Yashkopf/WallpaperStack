@@ -1,6 +1,5 @@
 package com.example.wallpaperstack.data.network.model
 
-import com.example.wallpaperstack.domain.model.QueryData
 import com.google.gson.annotations.SerializedName
 
 data class MetaDataResponse(
@@ -16,9 +15,6 @@ data class MetaDataResponse(
 
     @SerializedName("total")
     val total: Int,
-
-    @SerializedName("query")
-    val query: QueryData?,
 
     @SerializedName("seed")
     val seed: String?

@@ -9,11 +9,14 @@ import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 import kotlinx.coroutines.flow.Flow
 
-class WallpapersRepositoryImpl (
+class WallpapersRepositoryImpl(
     private val api: WallpaperApi,
 ) : WallpapersRepository {
 
-    override fun getWallpapersList(sorting: Sorting): Flow<PagingData<WallpaperInfo>> {
+    override fun getWallpapersList(
+        sorting: Sorting,
+        query: String?,
+    ): Flow<PagingData<WallpaperInfo>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 7,
@@ -21,7 +24,7 @@ class WallpapersRepositoryImpl (
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                WallpapersPagingSource(api, sorting)
+                WallpapersPagingSource(api, sorting, query)
             }
         ).flow
     }

@@ -1,38 +1,56 @@
 package com.example.wallpaperstack.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.wallpaperstack.data.network.ConnectivityManager
+import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetWallpaperListUseCase
+import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 
-class WallpaperViewModel (
+class WallpaperViewModel(
     private val getWallpaperListUseCase: GetWallpaperListUseCase,
+    private val connectivityManager: ConnectivityManager,
 ) : ViewModel() {
 
-    private val sorting = MutableStateFlow(Sorting.DATE_ADDED)
+    private val sorting = MutableStateFlow(Sorting.TOP_LIST)
+    private val currentQuery = MutableStateFlow<String?>(null)
 
     private val _buttonState =
-        MutableStateFlow<Pair<Int, Int>>(UNSELECTED_VALUE to Sorting.DATE_ADDED.ordinal)
+        MutableStateFlow<Pair<Int, Int>>(UNSELECTED_VALUE to Sorting.TOP_LIST.ordinal)
     val buttonState: StateFlow<Pair<Int, Int>> = _buttonState
 
+    val connectivity = connectivityManager.connectionAsStateFlow
 
-    val wallpapers = sorting.flatMapLatest { sortingType ->
-        getWallpaperListUseCase.invoke(sortingType)
-            .cachedIn(viewModelScope)
-    }.stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+    val wallpapersList = combine(sorting,currentQuery){ sorting, query ->
+        Pair(sorting, query)
+    }.flatMapLatest{ (sorting, query) ->
+        getWallpaperListUseCase(sorting, query)
+    }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
+
+    fun searchWallpapers(query: String) {
+        currentQuery.value = query
+    }
 
     fun sortWallpapers(buttonIndex: Int) {
         val firstStateButton = _buttonState.value.second
-
         this.sorting.value = Sorting.entries[buttonIndex]
         _buttonState.value = firstStateButton to buttonIndex
     }

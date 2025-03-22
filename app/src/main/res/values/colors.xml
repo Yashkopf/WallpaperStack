@@ -2,6 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="home_background">#3E3E3E</color>
     <color name="default_button_state">#161616</color>
     <color name="select_button_state">#525252</color>
+    <color name="connection_successful">#CB63D51E</color>
+    <color name="connection_failure">#D98A8A8A</color>
+    <color name="shimmer_background">#2F2F2F</color>
+    <color name="shimmer_animation">#3E3E3E</color>
 </resources>

@@ -87,11 +87,16 @@ dependencies {
     implementation("io.insert-koin:koin-android-compat:4.0.2")
     // Navigation Graph
     implementation("io.insert-koin:koin-androidx-navigation:4.0.2")
-    // App Startup
-//    implementation("io.insert-koin:koin-androidx-startup:4.0.2")
+
+    //Facebook Shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    //SwipeToRefresh
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation ("androidx.fragment:fragment-ktx:1.8.6")
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")

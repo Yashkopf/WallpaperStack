@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wallpaperstack.databinding.FragmentDetailBinding
+import com.example.wallpaperstack.domain.model.MetaData
 import com.example.wallpaperstack.domain.model.WallpaperInfo
+import com.example.wallpaperstack.presentation.utils.formatDate
 
 class DetailFragment : Fragment() {
 
@@ -44,8 +46,12 @@ class DetailFragment : Fragment() {
                         .centerCrop()
                 )
                 .into(ivWallpaper)
+            tvDimension.text = wallpapers?.resolution
+            tvSize.text = wallpapers?.fileSize.toString()
+            tvCreatedAt.text = formatDate(wallpapers?.createdAt.toString())
+            tvCategory.text = wallpapers?.category
+            tvViews.text = wallpapers?.views.toString()
         }
-
     }
 
     private fun onBackPressedCallBack() {
@@ -82,11 +88,12 @@ class DetailFragment : Fragment() {
     }
 
     private fun zoomOutAnimation() {
+
         view?.animate()
-            ?.scaleX(0.5f)
-            ?.scaleY(0.5f)
+            ?.scaleX(0.6f)
+            ?.scaleY(0.6f)
             ?.alpha(0f)
-            ?.setDuration(200)
+            ?.setDuration(100)
             ?.setInterpolator(DecelerateInterpolator())
             ?.withEndAction {
                 findNavController().popBackStack()

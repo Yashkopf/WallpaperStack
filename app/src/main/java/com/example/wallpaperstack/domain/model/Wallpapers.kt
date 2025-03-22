@@ -1,6 +1,9 @@
 package com.example.wallpaperstack.domain.model
 
-data class Wallpapers (
+import com.example.wallpaperstack.data.network.model.MetaDataResponse
+
+data class Wallpapers(
+
     val data: List<WallpaperInfo>,
-    val meta: MetaData
+    val meta: MetaData?,
 )
