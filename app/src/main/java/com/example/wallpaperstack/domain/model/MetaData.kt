@@ -5,6 +5,5 @@ data class MetaData(
     val lastPage: Int,
     val perPage: Int,
     val total: Int,
-    val query: QueryData?,
     val seed: String?
 )

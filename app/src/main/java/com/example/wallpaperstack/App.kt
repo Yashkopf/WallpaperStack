@@ -1,24 +1,22 @@
 package com.example.wallpaperstack
 
 import android.app.Application
-import androidx.fragment.app.Fragment
-import com.example.wallpaperstack.di.components.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import com.example.wallpaperstack.di.modules.networkModule
+import com.example.wallpaperstack.di.modules.repositoryModule
+import com.example.wallpaperstack.di.modules.useCaseModule
+import com.example.wallpaperstack.di.modules.viewModelModule
+import dagger.hilt.android.HiltAndroidApp
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class App: Application(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector : DispatchingAndroidInjector<Any>
+@HiltAndroidApp
+class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder().application(this).build().inject(this)
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
+        startKoin{
+            androidContext(this@App)
+            modules(listOf(viewModelModule, repositoryModule, networkModule, useCaseModule))
+        }
     }
 }

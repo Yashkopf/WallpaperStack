@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -80,14 +81,33 @@ dependencies {
     implementation ("com.google.dagger:dagger-android:2.46.1")
     implementation ("com.google.dagger:dagger-android-support:2.46.1")
 
+    //coin
+    implementation("io.insert-koin:koin-android:4.0.2")
+    // Java Compatibility
+    implementation("io.insert-koin:koin-android-compat:4.0.2")
+    // Navigation Graph
+    implementation("io.insert-koin:koin-androidx-navigation:4.0.2")
+
+    //Facebook Shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    //SwipeToRefresh
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation ("androidx.fragment:fragment-ktx:1.8.6")
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    //dagger-hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     implementation("androidx.recyclerview:recyclerview:1.4.0")
 

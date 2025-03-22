@@ -1,17 +1,17 @@
 package com.example.wallpaperstack.domain.usecases.getWallpaperList
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.model.WallpaperInfo
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import retrofit2.http.Query
 
-class GetWallpaperListUseCaseImpl @Inject constructor(
+class GetWallpaperListUseCaseImpl (
     private val repository: WallpapersRepository,
 ) : GetWallpaperListUseCase {
 
-    override fun invoke(sorting: Sorting): LiveData<PagingData<WallpaperInfo>> {
-        return repository.getWallpapersList(sorting)
+    override fun invoke(sorting: Sorting, query: String?): Flow<PagingData<WallpaperInfo>> {
+        return repository.getWallpapersList(sorting, query)
     }
 }

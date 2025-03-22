@@ -9,3 +9,6 @@ import java.util.Locale
 fun Context.getCustomColor(color:Int): Int {
     return ContextCompat.getColor(this, color)
 }
+fun Fragment.getCustomColor(color:Int): Int {
+    return ContextCompat.getColor(requireContext(), color)
+}

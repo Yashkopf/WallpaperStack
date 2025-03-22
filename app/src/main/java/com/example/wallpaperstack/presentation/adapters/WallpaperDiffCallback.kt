@@ -2,7 +2,6 @@ package com.example.wallpaperstack.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.wallpaperstack.domain.model.WallpaperInfo
-import com.example.wallpaperstack.domain.model.Wallpapers
 
 class WallpaperDiffCallback : DiffUtil.ItemCallback<WallpaperInfo>() {
 
