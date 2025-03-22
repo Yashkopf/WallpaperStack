@@ -44,7 +44,6 @@ class WallpaperViewModel(
         getWallpaperListUseCase(sorting, query)
     }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
-
     fun searchWallpapers(query: String) {
         currentQuery.value = query
     }
