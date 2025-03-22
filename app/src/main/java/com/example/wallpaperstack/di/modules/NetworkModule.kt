@@ -2,57 +2,48 @@ package com.example.wallpaperstack.di.modules
 
 import com.example.wallpaperstack.BuildConfig
 import com.example.wallpaperstack.data.network.AuthInterceptor
+import com.example.wallpaperstack.data.network.ConnectivityManager
 import com.example.wallpaperstack.data.network.api.WallpaperApi
-import dagger.Module
-import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
-@Module
-class NetworkModule {
+val networkModule = module {
 
-    @Singleton
-    @Provides
-    fun provideAuthInterceptor(): AuthInterceptor {
-        return AuthInterceptor(BuildConfig.API_KEY)
+    single {
+        AuthInterceptor(BuildConfig.API_KEY)
     }
 
-    @Singleton
-    @Provides
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
+    single<HttpLoggingInterceptor>{
+        HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
 
-    @Singleton
-    @Provides
-    fun provideOkHttpClient(): OkHttpClient =
+    single<OkHttpClient> {
         OkHttpClient.Builder()
-            .readTimeout(45L, TimeUnit.SECONDS)
-            .connectTimeout(45L, TimeUnit.SECONDS)
-            .writeTimeout(45L, TimeUnit.SECONDS)
-            .addInterceptor(provideAuthInterceptor())
-            .addInterceptor(provideLoggingInterceptor())
-            .build()
-
-    @Singleton
-    @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .readTimeout(15L, TimeUnit.SECONDS)
+            .connectTimeout(15L, TimeUnit.SECONDS)
+            .writeTimeout(15L, TimeUnit.SECONDS)
+            .addInterceptor(get<AuthInterceptor>())
+            .addInterceptor(get<HttpLoggingInterceptor>())
             .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideWallpaperApi(retrofit: Retrofit): WallpaperApi {
-        return retrofit.create(WallpaperApi::class.java)
+    single {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(get())
+            .build()
+            .create(WallpaperApi::class.java)
+    }
+
+    single {
+        ConnectivityManager(androidApplication())
     }
 }
