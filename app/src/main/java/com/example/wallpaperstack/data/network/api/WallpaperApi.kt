@@ -19,8 +19,8 @@ interface WallpaperApi {
         @Query("purity") purity: String = PURITY_NUMBER,
         @Query("ratios") ratios: String = RATIO,
         @Query("sorting") sorting: String? = null,
+        @Query("ai_art_filter") aiFilter: String = AI_FILTER,
         @Query("page") @IntRange(from = 1) page: Int = 1,
-        @Query("ai_art_filter") aiFilter: String = AI_FILTER
     ): Response<WallpapersResponse>
 
     @GET("api/v1/w/{id}")
@@ -30,9 +30,9 @@ interface WallpaperApi {
 
     companion object {
 
-        const val CATEGORIES_NUMBER = "101"
+        const val CATEGORIES_NUMBER = "000"
         const val PURITY_NUMBER = "110"
-        const val RATIO = "landscape%2Cportrait"
+        const val RATIO = "portrait"
         const val AI_FILTER = "0"
 
     }

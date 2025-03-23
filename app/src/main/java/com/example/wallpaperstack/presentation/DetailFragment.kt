@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wallpaperstack.databinding.FragmentDetailBinding
-import com.example.wallpaperstack.domain.model.MetaData
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 import com.example.wallpaperstack.presentation.utils.formatDate
 

@@ -17,5 +17,5 @@ data class MetaDataResponse(
     val total: Int,
 
     @SerializedName("seed")
-    val seed: String?
+    val seed: String?,
 )

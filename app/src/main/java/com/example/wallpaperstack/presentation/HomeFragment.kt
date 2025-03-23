@@ -19,19 +19,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
-import com.example.wallpaperstack.data.mappers.toMetaData
-import com.example.wallpaperstack.data.network.model.MetaDataResponse
 import com.example.wallpaperstack.databinding.FragmentHomeBinding
-import com.example.wallpaperstack.databinding.SkeletonLayoutBinding
-import com.example.wallpaperstack.domain.model.MetaData
+import com.example.wallpaperstack.domain.model.WallpaperInfo
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
 import com.example.wallpaperstack.presentation.utils.MarginItemDecoration
 import com.example.wallpaperstack.presentation.utils.getCustomColor
-import com.facebook.shimmer.Shimmer
-import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -51,7 +47,8 @@ class HomeFragment : Fragment() {
 
     private val buttons = mutableListOf<TextView?>()
     private var adapter: WallpaperAdapter? = null
-    private val metaData: MetaDataResponse? = null
+
+    private val wallpapers: WallpaperInfo? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,6 +86,11 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.wallpapersList.collectLatest { pagingData ->
                 adapter?.submitData(pagingData)
+                val total = pagingData.map { info ->
+                    info.total
+                }
+                Log.e("gere", "$total")
+                binding?.testSearch?.text = total.toString()
             }
         }
     }
@@ -97,8 +99,8 @@ class HomeFragment : Fragment() {
         buttons.clear()
         buttons.addAll(
             listOf(
-                binding?.topList,
-                binding?.newest,
+                binding?.hot,
+                binding?.relevance,
                 binding?.favorite,
                 binding?.random,
                 binding?.views
@@ -198,15 +200,13 @@ class HomeFragment : Fragment() {
         val searchEditText: EditText? = binding?.etSearchQuery
         val searchButton: Button = binding!!.btnSearch
 
-        val test = metaData?.toMetaData()
-        binding?.testSearch?.text = test?.total.toString()
-
         searchButton.setOnClickListener { view ->
             val query = searchEditText?.text.toString().trim()
             binding?.rvWallpapers?.smoothScrollToPosition(0)
             viewModel.searchWallpapers(
                 (if (query.isEmpty()) "" else query).toString()
             )
+            viewModel.sortWallpapers(1)
             hideKeyboard(view)
         }
     }

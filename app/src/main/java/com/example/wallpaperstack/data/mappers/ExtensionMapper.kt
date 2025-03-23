@@ -1,8 +1,6 @@
 package com.example.wallpaperstack.data.mappers
 
-import com.example.wallpaperstack.data.network.model.MetaDataResponse
 import com.example.wallpaperstack.data.network.model.WallpaperInfoResponse
-import com.example.wallpaperstack.domain.model.MetaData
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 
 
@@ -20,17 +18,20 @@ internal fun WallpaperInfoResponse.toWallpapersInfo(): WallpaperInfo {
         colors = colors,
         path = path,
         thumbs = thumbs,
-        tag = tag
+        total = total,
     )
 }
 
-internal fun MetaDataResponse.toMetaData(): MetaData {
-    return MetaData(
-        currentPage = currentPage,
-        lastPage = lastPage,
-        perPage = perPage,
-        total = total,
-        seed = seed
-    )
-}
+//internal fun TagsResponse.toTags(): Tags {
+//    return Tags(
+//        id = id,
+//        name = name,
+//        alias = alias,
+//        categoryId = categoryId,
+//        category = category,
+//        purity = purity,
+//        createdAt = createdAt
+//    )
+//}
+
 

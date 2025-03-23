@@ -31,6 +31,7 @@ class WallpaperViewModel(
 
     private val sorting = MutableStateFlow(Sorting.TOP_LIST)
     private val currentQuery = MutableStateFlow<String?>(null)
+    private val totalNumber = MutableStateFlow<String?>(null)
 
     private val _buttonState =
         MutableStateFlow<Pair<Int, Int>>(UNSELECTED_VALUE to Sorting.TOP_LIST.ordinal)

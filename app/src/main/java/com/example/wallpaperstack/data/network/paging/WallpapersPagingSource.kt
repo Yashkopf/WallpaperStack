@@ -1,10 +1,10 @@
 package com.example.wallpaperstack.data.network.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.wallpaperstack.data.mappers.toWallpapersInfo
 import com.example.wallpaperstack.data.network.api.WallpaperApi
-import com.example.wallpaperstack.data.network.model.MetaDataResponse
 import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 import retrofit2.HttpException
@@ -26,13 +26,14 @@ class WallpapersPagingSource(
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val response = wallpaperApi.getListOfWallpapers(
-                query, page = pageNumber, sorting = sorting.value)
+                searchQuery = query, page = pageNumber, sorting = sorting.value)
 
             if (response.isSuccessful) {
-                val result = response.body()?.data?.map { response ->
-                    response.toWallpapersInfo()
-                } ?: emptyList()
                 val pageSize = response.body()?.meta?.total
+                val result = response.body()?.data?.map { response ->
+                    response.toWallpapersInfo().copy(total = pageSize ?: 0)
+                } ?: emptyList()
+
                 val prevKey = if (pageNumber > 1) pageNumber - 1 else null
                 val nextKey = if (pageNumber >= (pageSize ?: pageNumber)) null else pageNumber + 1
 
