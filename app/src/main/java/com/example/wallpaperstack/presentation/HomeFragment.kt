@@ -10,21 +10,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
 import com.example.wallpaperstack.databinding.FragmentHomeBinding
-import com.example.wallpaperstack.domain.model.WallpaperInfo
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
 import com.example.wallpaperstack.presentation.utils.MarginItemDecoration
 import com.example.wallpaperstack.presentation.utils.getCustomColor
@@ -48,7 +45,7 @@ class HomeFragment : Fragment() {
     private val buttons = mutableListOf<TextView?>()
     private var adapter: WallpaperAdapter? = null
 
-    private val wallpapers: WallpaperInfo? = null
+    private var searchView: SearchView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,11 +83,14 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.wallpapersList.collectLatest { pagingData ->
                 adapter?.submitData(pagingData)
-                val total = pagingData.map { info ->
-                    info.total
-                }
-                Log.e("gere", "$total")
-                binding?.testSearch?.text = total.toString()
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.itemsCount.collectLatest { value ->
+                Log.e("gere", "$value fragment")
+                if (value == null) return@collectLatest
+                binding?.tvCountResults?.text = value.toString()
             }
         }
     }
@@ -197,18 +197,20 @@ class HomeFragment : Fragment() {
 
     private fun searchWallpapers() {
 
-        val searchEditText: EditText? = binding?.etSearchQuery
-        val searchButton: Button = binding!!.btnSearch
+        searchView = binding?.searchQuery
+        searchView?.clearFocus()
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.searchWallpapers(query.toString().trim())
+                binding?.rvWallpapers?.smoothScrollToPosition(0)
+                viewModel.sortWallpapers(1)
+                return true
+            }
 
-        searchButton.setOnClickListener { view ->
-            val query = searchEditText?.text.toString().trim()
-            binding?.rvWallpapers?.smoothScrollToPosition(0)
-            viewModel.searchWallpapers(
-                (if (query.isEmpty()) "" else query).toString()
-            )
-            viewModel.sortWallpapers(1)
-            hideKeyboard(view)
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     fun hideKeyboard(view: View) {

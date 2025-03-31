@@ -1,5 +1,6 @@
 package com.example.wallpaperstack.data.repository
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -8,10 +9,13 @@ import com.example.wallpaperstack.data.network.paging.WallpapersPagingSource
 import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class WallpapersRepositoryImpl(
     private val api: WallpaperApi,
 ) : WallpapersRepository {
+
+    override val itemsCount = MutableStateFlow<Int?>(null)
 
     override fun getWallpapersList(
         sorting: Sorting,
@@ -24,7 +28,10 @@ class WallpapersRepositoryImpl(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                WallpapersPagingSource(api, sorting, query)
+                WallpapersPagingSource(api, sorting, query, onItemsCountChange = {
+                    itemsCount.value
+                    Log.e("gere", "${itemsCount.value} repo")
+                })
             }
         ).flow
     }

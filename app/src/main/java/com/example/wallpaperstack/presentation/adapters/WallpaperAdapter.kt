@@ -1,5 +1,6 @@
 package com.example.wallpaperstack.presentation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +22,15 @@ class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): WallpaperViewHolder = WallpaperViewHolder(
-        ItemWallpaperBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+    ): WallpaperViewHolder{
+        return WallpaperViewHolder(
+            ItemWallpaperBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
-    )
+    }
 
     override fun onBindViewHolder(
         holder: WallpaperViewHolder,

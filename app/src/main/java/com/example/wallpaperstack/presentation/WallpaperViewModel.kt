@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.example.wallpaperstack.data.network.ConnectivityManager
 import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.domain.model.Sorting
+import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetItemsCountUseCase
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetWallpaperListUseCase
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
 import kotlinx.coroutines.delay
@@ -27,11 +28,11 @@ import kotlinx.coroutines.launch
 class WallpaperViewModel(
     private val getWallpaperListUseCase: GetWallpaperListUseCase,
     private val connectivityManager: ConnectivityManager,
+    private val getItemsCountUseCase: GetItemsCountUseCase,
 ) : ViewModel() {
 
     private val sorting = MutableStateFlow(Sorting.TOP_LIST)
     private val currentQuery = MutableStateFlow<String?>(null)
-    private val totalNumber = MutableStateFlow<String?>(null)
 
     private val _buttonState =
         MutableStateFlow<Pair<Int, Int>>(UNSELECTED_VALUE to Sorting.TOP_LIST.ordinal)
@@ -39,11 +40,18 @@ class WallpaperViewModel(
 
     val connectivity = connectivityManager.connectionAsStateFlow
 
-    val wallpapersList = combine(sorting,currentQuery){ sorting, query ->
+    val wallpapersList = combine(sorting, currentQuery) { sorting, query ->
         Pair(sorting, query)
-    }.flatMapLatest{ (sorting, query) ->
+    }.flatMapLatest { (sorting, query) ->
         getWallpaperListUseCase(sorting, query)
-    }.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+    }.cachedIn(viewModelScope)
+        .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+    val itemsCount =
+        getItemsCountUseCase()
+            .stateIn(viewModelScope, SharingStarted.Lazily, null).also { flow ->
+                Log.e("gere", "${flow.value} viewmodel")
+            }
 
     fun searchWallpapers(query: String) {
         currentQuery.value = query

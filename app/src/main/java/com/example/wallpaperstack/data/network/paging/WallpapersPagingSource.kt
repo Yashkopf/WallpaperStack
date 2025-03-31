@@ -12,7 +12,8 @@ import retrofit2.HttpException
 class WallpapersPagingSource(
     private val wallpaperApi: WallpaperApi,
     private val sorting: Sorting,
-    private val query: String?
+    private val query: String?,
+    private val onItemsCountChange: (Int?) -> Unit
 ) : PagingSource<Int, WallpaperInfo>() {
 
     override fun getRefreshKey(state: PagingState<Int, WallpaperInfo>): Int? {
@@ -29,13 +30,14 @@ class WallpapersPagingSource(
                 searchQuery = query, page = pageNumber, sorting = sorting.value)
 
             if (response.isSuccessful) {
-                val pageSize = response.body()?.meta?.total
+                val itemsCount = response.body()?.meta?.total
+                onItemsCountChange(itemsCount)
                 val result = response.body()?.data?.map { response ->
-                    response.toWallpapersInfo().copy(total = pageSize ?: 0)
+                    response.toWallpapersInfo().copy(total = itemsCount ?: 0)
                 } ?: emptyList()
 
                 val prevKey = if (pageNumber > 1) pageNumber - 1 else null
-                val nextKey = if (pageNumber >= (pageSize ?: pageNumber)) null else pageNumber + 1
+                val nextKey = if (pageNumber >= (itemsCount ?: pageNumber)) null else pageNumber + 1
 
                 return LoadResult.Page(result, prevKey, nextKey)
             } else {
