@@ -17,5 +17,5 @@ data class WallpaperInfo (
     val colors: List<String>,
     val path: String,
     val thumbs: Thumbs,
-    val tag: Tag?
+    val total: Int,
 ): Parcelable

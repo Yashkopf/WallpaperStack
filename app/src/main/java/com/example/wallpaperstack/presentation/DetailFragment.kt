@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wallpaperstack.databinding.FragmentDetailBinding
-import com.example.wallpaperstack.domain.model.MetaData
 import com.example.wallpaperstack.domain.model.WallpaperInfo
 import com.example.wallpaperstack.presentation.utils.formatDate
 
@@ -48,9 +47,13 @@ class DetailFragment : Fragment() {
                 .into(ivWallpaper)
             tvDimension.text = wallpapers?.resolution
             tvSize.text = wallpapers?.fileSize.toString()
-            tvCreatedAt.text = formatDate(wallpapers?.createdAt.toString())
+            tvCreatedAt.text = formatDate(wallpapers?.createdAt)
             tvCategory.text = wallpapers?.category
             tvViews.text = wallpapers?.views.toString()
+        }
+
+        binding?.btnBack?.setOnClickListener { v ->
+            zoomOutAnimation()
         }
     }
 

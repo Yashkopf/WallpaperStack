@@ -7,6 +7,6 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel {
-        WallpaperViewModel(get(), get())
+        WallpaperViewModel(get(), get(), get())
     }
 }

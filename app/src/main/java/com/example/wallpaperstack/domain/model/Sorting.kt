@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 enum class Sorting(val value: String) {
     TOP_LIST("hot"),
-    DATE_ADDED("date_added"),
+    RELEVANCE("relevance"),
     FAVORITES("favorites"),
     RANDOM("random"),
     VIEWS("views")

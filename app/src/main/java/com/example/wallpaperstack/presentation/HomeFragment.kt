@@ -1,6 +1,5 @@
 package com.example.wallpaperstack.presentation
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
@@ -9,29 +8,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
-import com.example.wallpaperstack.data.mappers.toMetaData
-import com.example.wallpaperstack.data.network.model.MetaDataResponse
 import com.example.wallpaperstack.databinding.FragmentHomeBinding
-import com.example.wallpaperstack.databinding.SkeletonLayoutBinding
-import com.example.wallpaperstack.domain.model.MetaData
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
 import com.example.wallpaperstack.presentation.utils.MarginItemDecoration
 import com.example.wallpaperstack.presentation.utils.getCustomColor
-import com.facebook.shimmer.Shimmer
-import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -51,7 +44,8 @@ class HomeFragment : Fragment() {
 
     private val buttons = mutableListOf<TextView?>()
     private var adapter: WallpaperAdapter? = null
-    private val metaData: MetaDataResponse? = null
+
+    private var searchView: SearchView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,13 +76,19 @@ class HomeFragment : Fragment() {
         changeSorting()
         initObservers()
         swipeToRefresh()
-
     }
 
     private fun initObservers() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.wallpapersList.collectLatest { pagingData ->
                 adapter?.submitData(pagingData)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.itemsCount.collect { value ->
+                if (value == null) return@collect
+                binding?.tvCountResults?.text = getString(R.string.count_results, value)
             }
         }
     }
@@ -97,8 +97,8 @@ class HomeFragment : Fragment() {
         buttons.clear()
         buttons.addAll(
             listOf(
-                binding?.topList,
-                binding?.newest,
+                binding?.hot,
+                binding?.relevance,
                 binding?.favorite,
                 binding?.random,
                 binding?.views
@@ -128,9 +128,14 @@ class HomeFragment : Fragment() {
         recyclerView = binding?.rvWallpapers
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
-        adapter = WallpaperAdapter { id, clickedView ->
-            launchDetailFragment(id, clickedView)
-        }
+        adapter = WallpaperAdapter(
+            onItemClick = { item, view  ->
+                launchDetailFragment(item, view)
+            },
+            onItemLongClick = { item ->
+                launchBottomSheetDialog(item)
+            }
+        )
 
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.adapter = adapter
@@ -185,6 +190,14 @@ class HomeFragment : Fragment() {
         )
     }
 
+    fun launchBottomSheetDialog(item: Parcelable){
+        val args = BottomSheetFragment.makeArgs(item)
+        val dialog = BottomSheetFragment().apply {
+            this.arguments = args
+        }
+        dialog.show(this.parentFragmentManager, "entity")
+    }
+
     private fun changeSorting() {
         buttons.forEachIndexed { index, button ->
             button?.setOnClickListener { view ->
@@ -195,26 +208,26 @@ class HomeFragment : Fragment() {
 
     private fun searchWallpapers() {
 
-        val searchEditText: EditText? = binding?.etSearchQuery
-        val searchButton: Button = binding!!.btnSearch
-
-        val test = metaData?.toMetaData()
-        binding?.testSearch?.text = test?.total.toString()
-
-        searchButton.setOnClickListener { view ->
-            val query = searchEditText?.text.toString().trim()
-            binding?.rvWallpapers?.smoothScrollToPosition(0)
-            viewModel.searchWallpapers(
-                (if (query.isEmpty()) "" else query).toString()
-            )
-            hideKeyboard(view)
+        searchView?.clearFocus()
+        searchView = binding?.searchQuery
+        val clearButton = searchView?.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.searchWallpapers(query.toString().trim())
+                binding?.rvWallpapers?.smoothScrollToPosition(0)
+                viewModel.sortWallpapers(1)
+                searchView?.clearFocus()
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+        clearButton?.setOnClickListener { v ->
+            viewModel.searchWallpapers("")
+            searchView?.clearFocus()
+            searchView?.setQuery(null, false)
         }
-    }
-
-    fun hideKeyboard(view: View) {
-        val inputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun connectivityStatus() {
@@ -273,6 +286,7 @@ class HomeFragment : Fragment() {
         binding?.rvWallpapers?.visibility = View.VISIBLE
         binding?.searchLayout?.visibility = View.VISIBLE
     }
+
 
     private fun swipeToRefresh() {
         val handler = Handler()

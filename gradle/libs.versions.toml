@@ -14,7 +14,6 @@ daggerCompiler = "2.46.1"
 kotlinAndroid = "1.8.0"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
-picassoVersion = "2.8"
 
 [libraries]
 dagger = { module = "com.google.dagger:dagger", version.ref = "daggerCompiler" }
@@ -31,7 +30,6 @@ converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
-picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picassoVersion" }
 
 [plugins]
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinAndroid" }
