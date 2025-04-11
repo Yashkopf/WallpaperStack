@@ -29,7 +29,7 @@ class WallpapersRepositoryImpl(
             ),
             pagingSourceFactory = {
                 WallpapersPagingSource(api, sorting, query, onItemsCountChange = {
-                    itemsCount.value
+                    itemsCount.value = it
                     Log.e("gere", "${itemsCount.value} repo")
                 })
             }

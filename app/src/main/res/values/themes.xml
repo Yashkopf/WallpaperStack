@@ -7,12 +7,24 @@
 
     <style name="Theme.WallpaperStack" parent="Base.Theme.WallpaperStack" />
 
+    <style name="TransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="Sorted.Button" parent="Widget.AppCompat.TextView">
         <item name="android:textSize"> 16sp </item>
         <item name="android:gravity"> center </item>
         <item name="android:textColor">@color/white</item>
         <item name="android:scrollHorizontally">true</item>
         <item name="background">@drawable/rounded_corner</item>
+        <item name="android:backgroundTint">@color/default_button_state</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryHint">@string/search_hint</item>
+        <item name="android:textColorHint">@color/select_button_state</item>
+        <item name="android:textColorPrimary">#CACACA</item>
+        <item name="android:tint">#43646A</item>
     </style>
 
     <style name="ShapeAppearanceOverlay">

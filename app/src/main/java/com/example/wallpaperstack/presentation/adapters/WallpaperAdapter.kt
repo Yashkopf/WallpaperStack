@@ -1,6 +1,5 @@
 package com.example.wallpaperstack.presentation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,10 @@ import com.example.wallpaperstack.domain.model.WallpaperInfo
 import com.example.wallpaperstack.presentation.utils.formatDate
 import com.google.android.material.shape.RoundedCornerTreatment
 
-class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
+class WallpaperAdapter(
+    private val onItemClick: ((WallpaperInfo, View) -> Unit),
+    private val onItemLongClick: ((WallpaperInfo) -> Unit),
+) :
     PagingDataAdapter<WallpaperInfo, WallpaperViewHolder>(
         WallpaperDiffCallback()
     ) {
@@ -22,7 +24,7 @@ class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): WallpaperViewHolder{
+    ): WallpaperViewHolder {
         return WallpaperViewHolder(
             ItemWallpaperBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -49,6 +51,10 @@ class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
                 root.setOnClickListener { v ->
                     onItemClick(wallpaper, v)
                 }
+                root.setOnLongClickListener { v ->
+                    onItemLongClick(wallpaper)
+                    return@setOnLongClickListener true
+                }
             }
 
             val imageScale = RequestOptions()
@@ -56,11 +62,13 @@ class WallpaperAdapter(private val onItemClick: (WallpaperInfo, View) -> Unit) :
                 .override(680, 1200)
 
             Glide.with(view.context)
-                .load(if (wallpaper.ratio.toFloat() <= 1f){
-                    wallpaper.thumbs.original
-                } else {
-                    wallpaper.thumbs.large
-                })
+                .load(
+                    if (wallpaper.ratio.toFloat() <= 1f) {
+                        wallpaper.thumbs.original
+                    } else {
+                        wallpaper.thumbs.large
+                    }
+                )
                 .transition(withCrossFade())
                 .placeholder(R.color.shimmer_background)
                 .apply(imageScale)

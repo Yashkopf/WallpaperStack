@@ -47,9 +47,13 @@ class DetailFragment : Fragment() {
                 .into(ivWallpaper)
             tvDimension.text = wallpapers?.resolution
             tvSize.text = wallpapers?.fileSize.toString()
-            tvCreatedAt.text = formatDate(wallpapers?.createdAt.toString())
+            tvCreatedAt.text = formatDate(wallpapers?.createdAt)
             tvCategory.text = wallpapers?.category
             tvViews.text = wallpapers?.views.toString()
+        }
+
+        binding?.btnBack?.setOnClickListener { v ->
+            zoomOutAnimation()
         }
     }
 

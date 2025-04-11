@@ -1,28 +1,19 @@
 package com.example.wallpaperstack.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.wallpaperstack.data.network.ConnectivityManager
-import com.example.wallpaperstack.data.repository.WallpapersRepository
 import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetItemsCountUseCase
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetWallpaperListUseCase
-import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 
 class WallpaperViewModel(
@@ -49,9 +40,7 @@ class WallpaperViewModel(
 
     val itemsCount =
         getItemsCountUseCase()
-            .stateIn(viewModelScope, SharingStarted.Lazily, null).also { flow ->
-                Log.e("gere", "${flow.value} viewmodel")
-            }
+            .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     fun searchWallpapers(query: String) {
         currentQuery.value = query

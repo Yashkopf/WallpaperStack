@@ -1,158 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@+id/swipeToRefreshLayout"
-    android:layout_height="match_parent"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeToRefreshLayout"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-<FrameLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/home_background"
-    android:orientation="vertical"
-    tools:context=".presentation.HomeFragment">
-
-
-    <LinearLayout
-        android:id="@+id/main"
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@color/home_background"
+        android:orientation="vertical"
+        tools:context=".presentation.HomeFragment">
 
-        <HorizontalScrollView
-            android:id="@+id/swSortButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="12dp"
-            android:scrollbars="none"
-            android:visibility="gone"
-            tools:visibility="visible">
 
-            <LinearLayout
+        <LinearLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:id="@+id/swSortButtons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp">
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:scrollbars="none"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <TextView
-                    android:id="@+id/hot"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/rounded_corner"
-                    android:gravity="center"
-                    android:paddingHorizontal="8dp"
-                    android:scrollHorizontally="true"
-                    android:text="@string/category_hot"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp">
 
-                <TextView
-                    android:id="@+id/relevance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/rounded_corner"
-                    android:paddingHorizontal="8dp"
-                    android:scrollHorizontally="true"
-                    android:text="@string/category_relevance"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/hot"
+                        style="@style/Sorted.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="4dp"
+                        android:background="@drawable/rounded_views"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="8dp"
+                        android:scrollHorizontally="true"
+                        android:text="@string/category_hot" />
 
-                <TextView
-                    android:id="@+id/favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/rounded_corner"
-                    android:paddingHorizontal="8dp"
-                    android:scrollHorizontally="true"
-                    android:text="@string/category_favorite"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/relevance"
+                        style="@style/Sorted.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="4dp"
+                        android:background="@drawable/rounded_views"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="8dp"
+                        android:scrollHorizontally="true"
+                        android:text="@string/category_relevance" />
 
-                <TextView
-                    android:id="@+id/random"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/rounded_corner"
-                    android:paddingHorizontal="8dp"
-                    android:scrollHorizontally="true"
-                    android:text="@string/category_random"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/favorite"
+                        style="@style/Sorted.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="4dp"
+                        android:background="@drawable/rounded_views"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="8dp"
+                        android:scrollHorizontally="true"
+                        android:text="@string/category_favorite" />
 
-                <TextView
-                    android:id="@+id/views"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/rounded_corner"
-                    android:paddingHorizontal="8dp"
-                    android:scrollHorizontally="true"
-                    android:text="@string/category_views"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/random"
+                        style="@style/Sorted.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="4dp"
+                        android:background="@drawable/rounded_views"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="8dp"
+                        android:scrollHorizontally="true"
+                        android:text="@string/category_random" />
 
-            </LinearLayout>
-        </HorizontalScrollView>
+                    <TextView
+                        android:id="@+id/views"
+                        style="@style/Sorted.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="4dp"
+                        android:background="@drawable/rounded_views"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="8dp"
+                        android:scrollHorizontally="true"
+                        android:text="@string/category_views" />
 
-        <FrameLayout
-            android:id="@+id/searchLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:visibility="invisible"
-            tools:visibility="visible">
+                </LinearLayout>
+            </HorizontalScrollView>
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchQuery"
+            <FrameLayout
+                android:id="@+id/searchLayout"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                app:iconifiedByDefault="false"
-                app:queryHint="search" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="invisible"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchQuery"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    style="@style/SearchViewStyle"
+                    android:theme="@style/SearchViewStyle"
+                    app:iconifiedByDefault="false"
+                    android:layout_marginHorizontal="12dp"
+                    android:background="@drawable/rounded_views"
+                    android:backgroundTint="#27000000" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvCountResults"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="end"
+                android:gravity="start"
+                android:paddingStart="24dp"
                 android:textColor="@color/white"
-                tools:text="test"/>
+                tools:text="test" />
 
-        </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWallpapers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="true"
+                android:visibility="gone"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_wallpaper"
+                tools:visibility="visible" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWallpapers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:saveEnabled="true"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_wallpaper"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-
-    </LinearLayout>
+        </LinearLayout>
 
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:shimmer_base_alpha="1"
             app:shimmer_base_color="@color/shimmer_background"
             app:shimmer_colored="true"
-            app:shimmer_base_alpha="1"
             app:shimmer_highlight_color="@color/shimmer_animation"
             tools:visibility="gone">
 
@@ -160,28 +163,28 @@
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/connectionView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="48dp"
-        android:layout_marginBottom="48dp"
-        android:gravity="center"
-        app:cardCornerRadius="25dp"
-        app:strokeWidth="0dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tvConnectionState"
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/connectionView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingVertical="4dp"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginBottom="48dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:cardCornerRadius="25dp"
+            app:strokeWidth="0dp">
 
-    </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/tvConnectionState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingVertical="4dp"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
-</FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

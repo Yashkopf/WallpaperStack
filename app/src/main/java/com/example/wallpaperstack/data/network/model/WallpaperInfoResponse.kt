@@ -1,9 +1,9 @@
 package com.example.wallpaperstack.data.network.model
 
-import com.example.wallpaperstack.domain.model.Thumbs
 import com.google.gson.annotations.SerializedName
 
 data class WallpaperInfoResponse (
+
     @SerializedName("id")
     val id: String,
 
@@ -12,6 +12,9 @@ data class WallpaperInfoResponse (
 
     @SerializedName("short_url")
     val shortUrl: String,
+
+    @SerializedName("uploader")
+    val uploader: UploaderResponse,
 
     @SerializedName("views")
     val views: Int,
@@ -59,7 +62,7 @@ data class WallpaperInfoResponse (
     val path: String,
 
     @SerializedName("thumbs")
-    val thumbs: Thumbs,
+    val thumbs: ThumbsResponse,
 
     @SerializedName("total")
     val total: Int,

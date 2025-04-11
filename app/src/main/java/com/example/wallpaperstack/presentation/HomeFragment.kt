@@ -1,6 +1,5 @@
 package com.example.wallpaperstack.presentation
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
@@ -9,7 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
@@ -76,21 +76,19 @@ class HomeFragment : Fragment() {
         changeSorting()
         initObservers()
         swipeToRefresh()
-
     }
 
     private fun initObservers() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.wallpapersList.collectLatest { pagingData ->
                 adapter?.submitData(pagingData)
             }
         }
 
-        lifecycleScope.launch {
-            viewModel.itemsCount.collectLatest { value ->
-                Log.e("gere", "$value fragment")
-                if (value == null) return@collectLatest
-                binding?.tvCountResults?.text = value.toString()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.itemsCount.collect { value ->
+                if (value == null) return@collect
+                binding?.tvCountResults?.text = getString(R.string.count_results, value)
             }
         }
     }
@@ -130,9 +128,14 @@ class HomeFragment : Fragment() {
         recyclerView = binding?.rvWallpapers
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
-        adapter = WallpaperAdapter { id, clickedView ->
-            launchDetailFragment(id, clickedView)
-        }
+        adapter = WallpaperAdapter(
+            onItemClick = { item, view  ->
+                launchDetailFragment(item, view)
+            },
+            onItemLongClick = { item ->
+                launchBottomSheetDialog(item)
+            }
+        )
 
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.adapter = adapter
@@ -187,6 +190,14 @@ class HomeFragment : Fragment() {
         )
     }
 
+    fun launchBottomSheetDialog(item: Parcelable){
+        val args = BottomSheetFragment.makeArgs(item)
+        val dialog = BottomSheetFragment().apply {
+            this.arguments = args
+        }
+        dialog.show(this.parentFragmentManager, "entity")
+    }
+
     private fun changeSorting() {
         buttons.forEachIndexed { index, button ->
             button?.setOnClickListener { view ->
@@ -197,26 +208,26 @@ class HomeFragment : Fragment() {
 
     private fun searchWallpapers() {
 
-        searchView = binding?.searchQuery
         searchView?.clearFocus()
+        searchView = binding?.searchQuery
+        val clearButton = searchView?.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.searchWallpapers(query.toString().trim())
                 binding?.rvWallpapers?.smoothScrollToPosition(0)
                 viewModel.sortWallpapers(1)
+                searchView?.clearFocus()
                 return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
         })
-    }
-
-    fun hideKeyboard(view: View) {
-        val inputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        clearButton?.setOnClickListener { v ->
+            viewModel.searchWallpapers("")
+            searchView?.clearFocus()
+            searchView?.setQuery(null, false)
+        }
     }
 
     private fun connectivityStatus() {
@@ -275,6 +286,7 @@ class HomeFragment : Fragment() {
         binding?.rvWallpapers?.visibility = View.VISIBLE
         binding?.searchLayout?.visibility = View.VISIBLE
     }
+
 
     private fun swipeToRefresh() {
         val handler = Handler()
