@@ -1,7 +1,7 @@
 package com.example.wallpaperstack.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.wallpaperstack.domain.model.WallpaperInfo
+import com.example.wallpaperstack.domain.model.listWallpapers.WallpaperInfo
 
 class WallpaperDiffCallback : DiffUtil.ItemCallback<WallpaperInfo>() {
 
@@ -16,7 +16,7 @@ class WallpaperDiffCallback : DiffUtil.ItemCallback<WallpaperInfo>() {
         oldItem: WallpaperInfo,
         newItem: WallpaperInfo,
     ): Boolean {
-        return oldItem.thumbs.original == newItem.thumbs.original
+        return oldItem.thumbs?.original == newItem.thumbs?.original
                 && oldItem.favorites == newItem.favorites
                 && oldItem.createdAt == newItem.createdAt
     }

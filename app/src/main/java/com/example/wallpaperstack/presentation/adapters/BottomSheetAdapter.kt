@@ -43,6 +43,6 @@ class ItemDiffCallback : DiffUtil.ItemCallback<ItemInfo>() {
         oldItem: ItemInfo,
         newItem: ItemInfo,
     ): Boolean {
-        return oldItem.title == newItem.title
+        return oldItem.value == newItem.value
     }
 }

@@ -7,9 +7,9 @@
 
     <style name="Theme.WallpaperStack" parent="Base.Theme.WallpaperStack" />
 
-    <style name="TransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
+<!--    <style name="TransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+<!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+<!--    </style>-->
 
     <style name="Sorted.Button" parent="Widget.AppCompat.TextView">
         <item name="android:textSize"> 16sp </item>
@@ -22,7 +22,7 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryHint">@string/search_hint</item>
-        <item name="android:textColorHint">@color/select_button_state</item>
+        <item name="android:textColorHint">#6B6B6B</item>
         <item name="android:textColorPrimary">#CACACA</item>
         <item name="android:tint">#43646A</item>
     </style>

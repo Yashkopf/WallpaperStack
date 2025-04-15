@@ -1,140 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeToRefreshLayout"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/secondmain"
+    tools:context=".presentation.HomeFragment">
 
-    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ImageView
+        android:id="@+id/backgroundGradient"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/home_background"
-        android:orientation="vertical"
-        tools:context=".presentation.HomeFragment">
+        android:layout_height="match_parent"
+        android:background="@drawable/background_gradient"
+        android:visibility="gone"/>
 
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <HorizontalScrollView
+            android:id="@+id/swSortButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:scrollbars="none"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <HorizontalScrollView
-                android:id="@+id/swSortButtons"
+            <LinearLayout
+                android:id="@+id/buttonsContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:scrollbars="none"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/hot"
+                    style="@style/Sorted.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="8dp">
-
-                    <TextView
-                        android:id="@+id/hot"
-                        style="@style/Sorted.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginVertical="4dp"
-                        android:background="@drawable/rounded_views"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="8dp"
-                        android:scrollHorizontally="true"
-                        android:text="@string/category_hot" />
-
-                    <TextView
-                        android:id="@+id/relevance"
-                        style="@style/Sorted.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginVertical="4dp"
-                        android:background="@drawable/rounded_views"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="8dp"
-                        android:scrollHorizontally="true"
-                        android:text="@string/category_relevance" />
-
-                    <TextView
-                        android:id="@+id/favorite"
-                        style="@style/Sorted.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginVertical="4dp"
-                        android:background="@drawable/rounded_views"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="8dp"
-                        android:scrollHorizontally="true"
-                        android:text="@string/category_favorite" />
-
-                    <TextView
-                        android:id="@+id/random"
-                        style="@style/Sorted.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginVertical="4dp"
-                        android:background="@drawable/rounded_views"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="8dp"
-                        android:scrollHorizontally="true"
-                        android:text="@string/category_random" />
-
-                    <TextView
-                        android:id="@+id/views"
-                        style="@style/Sorted.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginVertical="4dp"
-                        android:background="@drawable/rounded_views"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="8dp"
-                        android:scrollHorizontally="true"
-                        android:text="@string/category_views" />
-
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <FrameLayout
-                android:id="@+id/searchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:visibility="invisible"
-                tools:visibility="visible">
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchQuery"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    style="@style/SearchViewStyle"
-                    android:theme="@style/SearchViewStyle"
-                    app:iconifiedByDefault="false"
-                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="4dp"
                     android:background="@drawable/rounded_views"
-                    android:backgroundTint="#27000000" />
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/category_hot" />
 
-            </FrameLayout>
+                <TextView
+                    android:id="@+id/relevance"
+                    style="@style/Sorted.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@drawable/rounded_views"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/category_relevance" />
 
-            <TextView
-                android:id="@+id/tvCountResults"
+                <TextView
+                    android:id="@+id/favorite"
+                    style="@style/Sorted.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@drawable/rounded_views"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/category_favorite" />
+
+                <TextView
+                    android:id="@+id/random"
+                    style="@style/Sorted.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@drawable/rounded_views"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/category_random" />
+
+                <TextView
+                    android:id="@+id/views"
+                    style="@style/Sorted.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@drawable/rounded_views"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/category_views" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <FrameLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchQuery"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="start"
-                android:paddingStart="24dp"
-                android:textColor="@color/white"
-                tools:text="test" />
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="12dp"
+                android:background="@drawable/rounded_views"
+                android:backgroundTint="#27000000"
+                android:theme="@style/SearchViewStyle"
+                app:iconifiedByDefault="false" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvCountResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="start"
+            android:paddingStart="24dp"
+            android:textColor="#BABABA"
+            tools:text="test"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeToRefreshLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWallpapers"
@@ -145,46 +157,46 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/item_wallpaper"
                 tools:visibility="visible" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </LinearLayout>
+    </LinearLayout>
 
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:shimmer_base_alpha="1"
-            app:shimmer_base_color="@color/shimmer_background"
-            app:shimmer_colored="true"
-            app:shimmer_highlight_color="@color/shimmer_animation"
-            tools:visibility="gone">
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shimmer_base_alpha="1"
+        app:shimmer_base_color="@color/shimmer_background"
+        app:shimmer_colored="true"
+        app:shimmer_highlight_color="@color/shimmer_animation"
+        tools:visibility="gone">
 
-            <include layout="@layout/skeleton_layout" />
+        <include layout="@layout/skeleton_layout" />
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/connectionView"
-            android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/connectionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:cardCornerRadius="25dp"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:id="@+id/tvConnectionState"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginHorizontal="48dp"
-            android:layout_marginBottom="48dp"
-            android:gravity="center"
-            android:visibility="gone"
-            app:cardCornerRadius="25dp"
-            app:strokeWidth="0dp">
+            android:layout_gravity="center"
+            android:paddingVertical="4dp"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tvConnectionState"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingVertical="4dp"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+    </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-    </FrameLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</FrameLayout>

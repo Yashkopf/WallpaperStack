@@ -1,5 +1,6 @@
-package com.example.wallpaperstack.data.network.model
+package com.example.wallpaperstack.data.network.model.listWallpapers
 
+import com.example.wallpaperstack.data.network.model.itemWallpapers.UploaderResponse
 import com.google.gson.annotations.SerializedName
 
 data class WallpaperInfoResponse (
@@ -62,7 +63,7 @@ data class WallpaperInfoResponse (
     val path: String,
 
     @SerializedName("thumbs")
-    val thumbs: ThumbsResponse,
+    val thumbs: ThumbsResponse?,
 
     @SerializedName("total")
     val total: Int,

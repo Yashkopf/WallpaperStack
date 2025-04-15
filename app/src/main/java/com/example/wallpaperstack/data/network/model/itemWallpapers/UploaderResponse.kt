@@ -1,10 +1,10 @@
-package com.example.wallpaperstack.data.network.model
+package com.example.wallpaperstack.data.network.model.itemWallpapers
 
 import com.google.gson.annotations.SerializedName
 
 data class UploaderResponse(
 
-    @SerializedName("user_name")
+    @SerializedName("username")
     val userName: String,
 
     @SerializedName("group")

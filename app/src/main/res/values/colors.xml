@@ -3,10 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="home_background">#3E3E3E</color>
-    <color name="default_button_state">#161616</color>
-    <color name="select_button_state">#525252</color>
+    <color name="default_button_state">#B3161616</color>
+    <color name="select_button_state">#9A525252</color>
+    <color name="bottom_sheet_inner">#525252</color>
     <color name="connection_successful">#CB63D51E</color>
     <color name="connection_failure">#D98A8A8A</color>
     <color name="shimmer_background">#2F2F2F</color>
     <color name="shimmer_animation">#3E3E3E</color>
+    <color name="hot_sorting">#DC1507</color>
+    <color name="relevance_sorting">#7F09E9</color>
+    <color name="favorite_sorting">#E7B00C</color>
+    <color name="views_sorting">#1D9DE7</color>
+    <color name="random_sorting">#11EBC4</color>
 </resources>

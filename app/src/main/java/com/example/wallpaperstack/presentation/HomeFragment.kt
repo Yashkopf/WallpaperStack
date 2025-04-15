@@ -1,23 +1,23 @@
 package com.example.wallpaperstack.presentation
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
@@ -25,6 +25,7 @@ import com.example.wallpaperstack.databinding.FragmentHomeBinding
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
 import com.example.wallpaperstack.presentation.utils.MarginItemDecoration
 import com.example.wallpaperstack.presentation.utils.getCustomColor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -42,33 +43,23 @@ class HomeFragment : Fragment() {
     private var gridLayoutManager: GridLayoutManager? = null
     private var recyclerView: RecyclerView? = null
 
-    private val buttons = mutableListOf<TextView?>()
+    private var buttons: List<TextView>? = null
     private var adapter: WallpaperAdapter? = null
 
     private var searchView: SearchView? = null
+    private var currentColor: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding?.let { binding ->
-            ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(
-                    systemBars.left, systemBars.top, systemBars.right,
-                    systemBars.bottom
-                )
-                insets
-            }
-        }
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initSortingButtons()
         initRecyclerView()
         renderRecyclerState()
         connectivityStatus()
@@ -79,7 +70,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             viewModel.wallpapersList.collectLatest { pagingData ->
                 adapter?.submitData(pagingData)
             }
@@ -91,49 +83,82 @@ class HomeFragment : Fragment() {
                 binding?.tvCountResults?.text = getString(R.string.count_results, value)
             }
         }
-    }
-
-    fun initSortingButtons() {
-        buttons.clear()
-        buttons.addAll(
-            listOf(
-                binding?.hot,
-                binding?.relevance,
-                binding?.favorite,
-                binding?.random,
-                binding?.views
-            )
-        )
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.buttonState.collectLatest { (oldValue, newValue) ->
+
                 if (oldValue == newValue) return@collectLatest
-                buttons[newValue]?.backgroundTintList =
+                buttons?.get(newValue)?.backgroundTintList =
                     ColorStateList.valueOf(
                         requireContext()
                             .getCustomColor(R.color.select_button_state)
                     )
                 if (oldValue != -1) {
-                    buttons[oldValue]?.backgroundTintList =
+                    buttons?.get(oldValue)?.backgroundTintList =
                         ColorStateList.valueOf(
                             requireContext()
                                 .getCustomColor(R.color.default_button_state)
                         )
                 }
+                changeBackgroundSorting(newValue, oldValue)
             }
         }
     }
 
-    fun initRecyclerView() {
+    private fun applyAlphaToColor(color: Int, alpha: Int): Int {
+        val rgb = color and 0x00FFFFFF
+        val alphaShifted = (alpha.coerceIn(0, 255) shl 24)
+        return rgb or alphaShifted
+    }
+
+    private fun changeBackgroundSorting(newColor: Int, oldColor: Int) {
+
+        val newBackgroundColor = getBackgroundColor(newColor)
+        val oldBackgroundColor = getBackgroundColor(oldColor)
+
+        val fromColor = ContextCompat.getColor(requireContext(), oldBackgroundColor)
+        val toColor = ContextCompat.getColor(requireContext(), newBackgroundColor)
+
+        val drawable = binding?.backgroundGradient?.background?.mutate() ?: return
+        val wrapped = DrawableCompat.wrap(drawable)
+
+        val colorAnimation =
+            ValueAnimator.ofObject(
+                ArgbEvaluator(), applyAlphaToColor(fromColor, 77),
+                applyAlphaToColor(toColor, 77)
+            )
+//        if (currentColor != newColor){
+            colorAnimation.duration = 1500
+
+        colorAnimation.addUpdateListener { animator ->
+            val animatedColor = animator.animatedValue as Int
+            DrawableCompat.setTint(wrapped, animatedColor)
+        }
+        colorAnimation.start()
+        currentColor = newColor
+    }
+
+    private fun getBackgroundColor(index: Int): Int {
+        return when (index) {
+            0 -> R.color.hot_sorting
+            1 -> R.color.relevance_sorting
+            2 -> R.color.favorite_sorting
+            3 -> R.color.random_sorting
+            4 -> R.color.views_sorting
+            else -> R.color.hot_sorting
+        }
+    }
+
+    private fun initRecyclerView() {
         recyclerView = binding?.rvWallpapers
         gridLayoutManager = GridLayoutManager(requireContext(), 2)
 
         adapter = WallpaperAdapter(
-            onItemClick = { item, view  ->
+            onItemClick = { item, view ->
                 launchDetailFragment(item, view)
             },
-            onItemLongClick = { item ->
-                launchBottomSheetDialog(item)
+            onItemLongClick = { id ->
+                launchBottomSheetFragment(id)
             }
         )
 
@@ -166,10 +191,9 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         recyclerViewState = recyclerView?.layoutManager?.onSaveInstanceState()
-
     }
 
-    fun launchDetailFragment(id: Parcelable, clickedView: View) {
+    private fun launchDetailFragment(id: Parcelable, clickedView: View) {
         val animation = NavOptions.Builder()
         animation.setEnterAnim(R.anim.zoom_enter)
 
@@ -190,8 +214,8 @@ class HomeFragment : Fragment() {
         )
     }
 
-    fun launchBottomSheetDialog(item: Parcelable){
-        val args = BottomSheetFragment.makeArgs(item)
+    private fun launchBottomSheetFragment(id: String) {
+        val args = BottomSheetFragment.makeArgs(id)
         val dialog = BottomSheetFragment().apply {
             this.arguments = args
         }
@@ -199,8 +223,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeSorting() {
-        buttons.forEachIndexed { index, button ->
-            button?.setOnClickListener { view ->
+
+        buttons = listOfNotNull(
+            binding?.hot,
+            binding?.relevance,
+            binding?.favorite,
+            binding?.random,
+            binding?.views
+        )
+
+        buttons?.forEachIndexed { index, button ->
+            button.setOnClickListener { view ->
                 viewModel.sortWallpapers(index)
             }
         }
@@ -210,7 +243,8 @@ class HomeFragment : Fragment() {
 
         searchView?.clearFocus()
         searchView = binding?.searchQuery
-        val clearButton = searchView?.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+        val clearButton =
+            searchView?.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.searchWallpapers(query.toString().trim())
@@ -219,6 +253,7 @@ class HomeFragment : Fragment() {
                 searchView?.clearFocus()
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
@@ -285,8 +320,9 @@ class HomeFragment : Fragment() {
         binding?.swSortButtons?.visibility = View.VISIBLE
         binding?.rvWallpapers?.visibility = View.VISIBLE
         binding?.searchLayout?.visibility = View.VISIBLE
+        binding?.backgroundGradient?.visibility = View.VISIBLE
+        binding?.tvCountResults?.visibility = View.VISIBLE
     }
-
 
     private fun swipeToRefresh() {
         val handler = Handler()

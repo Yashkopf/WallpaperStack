@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:scr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,9 +14,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="top"
         android:background="@drawable/bottomsheet_rounded"
-        android:backgroundTint="@color/select_button_state"
+        android:backgroundTint="@color/bottom_sheet_inner"
         android:orientation="vertical"
-        android:paddingHorizontal="36dp">
+        android:paddingHorizontal="32dp">
 
 
         <View
@@ -26,25 +27,54 @@
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/home_background" />
 
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="test"
-            android:textColor="@color/white"/>
+            android:layout_marginTop="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
+                android:textColor="#A0A0A0" />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="test"
+                android:layout_gravity="bottom"
+                android:textColor="#84AFAF" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivUserAvatar"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="end"
+                tools:background="@color/white"/>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="2dp"
+            android:background="#646464"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBottomSheetDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="12dp"
             tools:listitem="@layout/bottomsheet_item" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnShowSimilar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:backgroundTint="@color/default_button_state"
             tools:text="Show similar" />
 
     </LinearLayout>

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 enum class Sorting(val value: String) {
-    TOP_LIST("hot"),
+    HOT("toplist"),
     RELEVANCE("relevance"),
     FAVORITES("favorites"),
     RANDOM("random"),

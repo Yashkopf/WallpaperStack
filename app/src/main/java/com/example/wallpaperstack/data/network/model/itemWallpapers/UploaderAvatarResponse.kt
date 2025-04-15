@@ -1,4 +1,4 @@
-package com.example.wallpaperstack.data.network.model
+package com.example.wallpaperstack.data.network.model.itemWallpapers
 
 import com.google.gson.annotations.SerializedName
 
