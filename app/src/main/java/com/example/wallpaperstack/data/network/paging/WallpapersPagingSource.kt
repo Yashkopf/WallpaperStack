@@ -1,12 +1,11 @@
 package com.example.wallpaperstack.data.network.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.wallpaperstack.data.mappers.toWallpapersInfo
 import com.example.wallpaperstack.data.network.api.WallpaperApi
 import com.example.wallpaperstack.domain.model.Sorting
-import com.example.wallpaperstack.domain.model.WallpaperInfo
+import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
 import retrofit2.HttpException
 
 class WallpapersPagingSource(
@@ -14,15 +13,15 @@ class WallpapersPagingSource(
     private val sorting: Sorting,
     private val query: String?,
     private val onItemsCountChange: (Int?) -> Unit
-) : PagingSource<Int, WallpaperInfo>() {
+) : PagingSource<Int, WallpapersListDetails>() {
 
-    override fun getRefreshKey(state: PagingState<Int, WallpaperInfo>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, WallpapersListDetails>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
         return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WallpaperInfo> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WallpapersListDetails> {
 
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
@@ -31,13 +30,15 @@ class WallpapersPagingSource(
 
             if (response.isSuccessful) {
                 val itemsCount = response.body()?.meta?.total
+                val lastPage = response.body()?.meta?.lastPage
+
                 onItemsCountChange(itemsCount)
                 val result = response.body()?.data?.map { response ->
-                    response.toWallpapersInfo().copy(total = itemsCount ?: 0)
+                    response.toWallpapersInfo()
                 } ?: emptyList()
 
                 val prevKey = if (pageNumber > 1) pageNumber - 1 else null
-                val nextKey = if (pageNumber >= (itemsCount ?: pageNumber)) null else pageNumber + 1
+                val nextKey = if (pageNumber >= (lastPage ?: pageNumber)) null else pageNumber + 1
 
                 return LoadResult.Page(result, prevKey, nextKey)
             } else {

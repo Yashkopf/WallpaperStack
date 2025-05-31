@@ -1,4 +1,4 @@
-package com.example.wallpaperstack.domain.model
+package com.example.wallpaperstack.domain.model.listWallpapers
 
 data class MetaData(
     val currentPage: Int,

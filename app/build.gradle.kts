@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -28,8 +31,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            val apiKey: String = project.findProperty("API_KEY") as String? ?: ""
+            val prop = Properties().apply{
+                load(FileInputStream(File(rootProject.rootDir,"local.properties")))
+            }
             buildConfigField("String", "BASE_URL", "\"https://wallhaven.cc\"")
-            buildConfigField ("String", "API_KEY", "\"${project.properties["API_KEY"]}\"")
+            buildConfigField ("String", "API_KEY", prop.getProperty("API_KEY"))
 
         }
         release {
@@ -38,7 +45,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            val prop = Properties().apply{
+                load(FileInputStream(File(rootProject.rootDir,"local.properties")))
+            }
             buildConfigField ("String", "BASE_URL", "\"https://wallhaven.cc\"")
+            buildConfigField ("String", "API_KEY", prop.getProperty("API_KEY"))
         }
     }
     compileOptions {
@@ -82,7 +93,7 @@ dependencies {
     implementation ("com.google.dagger:dagger-android:2.46.1")
     implementation ("com.google.dagger:dagger-android-support:2.46.1")
 
-    //coin
+    //Koin
     implementation("io.insert-koin:koin-android:4.0.2")
     // Java Compatibility
     implementation("io.insert-koin:koin-android-compat:4.0.2")

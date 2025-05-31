@@ -1,157 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnBack"
         android:layout_width="70dp"
         android:layout_height="44dp"
-        android:backgroundTint="#C82A2A2A"
-        android:background="@drawable/rounded_views"
-        app:cardCornerRadius="28dp"
         android:layout_marginStart="-18dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/rounded_views"
+        android:backgroundTint="#C82A2A2A"
+        app:cardCornerRadius="28dp"
         app:cardPreventCornerOverlap="true">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:scaleType="centerCrop"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
-            app:tint="@color/white"
-            android:layout_gravity="center"/>
+            app:tint="@color/white" />
 
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <androidx.core.widget.NestedScrollView
+    <ImageView
+        android:id="@+id/ivWallpaper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        tools:src="@drawable/ic_launcher_background" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:orientation="vertical">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDetailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/rounded_views"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:backgroundTint="#AD000000"
+        app:icon="@drawable/baseline_arrow_drop_up_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp">
 
-            <ImageView
-                android:id="@+id/ivWallpaper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_launcher_background" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginTop="12dp"
-                app:cardCornerRadius="20dp"
-                android:backgroundTint="@color/white"
-                android:gravity="center">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvDimension42"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:background="@drawable/rounded_corner"
-                        android:gravity="center"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"
-                        android:textColor="@color/white"
-                        tools:text="test" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:orientation="vertical"
-                    android:layout_marginHorizontal="16dp"
-                    android:paddingVertical="4dp">
-
-                    <TextView
-                        android:id="@+id/tvDimension"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:background="@drawable/rounded_corner"
-                        android:gravity="start"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:textColor="@color/white"
-                        tools:text="test" />
-
-                    <TextView
-                        android:id="@+id/tvCategory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:background="@drawable/rounded_corner"
-                        android:gravity="start"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:textColor="@color/white"
-                        tools:text="test" />
-
-                    <TextView
-                        android:id="@+id/tvCreatedAt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:background="@drawable/rounded_corner"
-                        android:gravity="start"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:textColor="@color/white"
-                        tools:text="test" />
-
-                    <TextView
-                        android:id="@+id/tvSize"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:background="@drawable/rounded_corner"
-                        android:gravity="start"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:textColor="@color/white"
-                        tools:text="test" />
-
-                    <TextView
-                        android:id="@+id/tvViews"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:background="@drawable/rounded_corner"
-                        android:gravity="start"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:textColor="@color/white"
-                        tools:text="test" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.button.MaterialButton>
 
 </FrameLayout>

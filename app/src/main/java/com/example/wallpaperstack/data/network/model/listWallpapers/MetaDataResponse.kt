@@ -1,16 +1,16 @@
-package com.example.wallpaperstack.data.network.model
+package com.example.wallpaperstack.data.network.model.listWallpapers
 
 import com.google.gson.annotations.SerializedName
 
 data class MetaDataResponse(
 
-    @SerializedName("currentPage")
+    @SerializedName("current_page")
     val currentPage: Int,
 
-    @SerializedName("lastPage")
+    @SerializedName("last_page")
     val lastPage: Int,
 
-    @SerializedName("perPage")
+    @SerializedName("per_page")
     val perPage: Int,
 
     @SerializedName("total")

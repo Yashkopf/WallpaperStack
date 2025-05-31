@@ -1,18 +1,20 @@
 package com.example.wallpaperstack.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.wallpaperstack.data.mappers.toWallpapers
 import com.example.wallpaperstack.data.network.api.WallpaperApi
 import com.example.wallpaperstack.data.network.paging.WallpapersPagingSource
+import com.example.wallpaperstack.data.network.utils.safeApiCall
 import com.example.wallpaperstack.domain.model.Sorting
-import com.example.wallpaperstack.domain.model.WallpaperInfo
+import com.example.wallpaperstack.domain.model.itemWallpapers.WallpaperSingleDetails
+import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class WallpapersRepositoryImpl(
-    private val api: WallpaperApi,
+    private val wallpaperApi: WallpaperApi,
 ) : WallpapersRepository {
 
     override val itemsCount = MutableStateFlow<Int?>(null)
@@ -20,22 +22,33 @@ class WallpapersRepositoryImpl(
     override fun getWallpapersList(
         sorting: Sorting,
         query: String?,
-    ): Flow<PagingData<WallpaperInfo>> {
+    ): Flow<PagingData<WallpapersListDetails>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 7,
-                maxSize = 24,
+                pageSize = PAGE_SIZE,
+                maxSize = MAX_PAGE_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                WallpapersPagingSource(api, sorting, query, onItemsCountChange = {
+                WallpapersPagingSource(wallpaperApi, sorting, query, onItemsCountChange = {
                     itemsCount.value = it
-                    Log.e("gere", "${itemsCount.value} repo")
                 })
             }
         ).flow
     }
+
+    override suspend fun getWallpaperInfo(id: String): Result<WallpaperSingleDetails?> {
+        return safeApiCall {
+            Result.success(wallpaperApi.getWallpaperInfo(id).body()?.toWallpapers())
+        }
+    }
+
+    companion object {
+        const val MAX_PAGE_SIZE = 24
+        const val PAGE_SIZE = 7
+    }
 }
+
 
 
 

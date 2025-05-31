@@ -1,4 +1,4 @@
-package com.example.wallpaperstack.domain.usecases.getWallpaperList
+package com.example.wallpaperstack.domain.usecases.getItemsCount
 
 import kotlinx.coroutines.flow.Flow
 
