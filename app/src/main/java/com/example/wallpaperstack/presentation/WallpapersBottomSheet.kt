@@ -1,18 +1,14 @@
 package com.example.wallpaperstack.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wallpaperstack.databinding.BottomsheetFragmentBinding
-import com.example.wallpaperstack.domain.model.itemWallpapers.WallpaperItemInfo
-import com.example.wallpaperstack.domain.model.listWallpapers.WallpaperInfo
 import com.example.wallpaperstack.presentation.adapters.BottomSheetAdapter
 import com.example.wallpaperstack.presentation.model.ItemInfo
 import com.example.wallpaperstack.presentation.utils.formatDate
@@ -23,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class BottomSheetFragment : BottomSheetDialogFragment() {
+class WallpapersBottomSheet : BottomSheetDialogFragment() {
 
     private var binding: BottomsheetFragmentBinding? = null
     private var recyclerView: RecyclerView? = null
@@ -52,7 +48,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         recyclerView?.adapter = adapter
 
-        val id = arguments?.getString(BOTTOM_SHEET_FRAGMENT_ENTITY)
+        val id = arguments?.getString(BOTTOM_SHEET_WALLPAPER_ID)
         viewModel.getWallpaperInfo(id)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -108,10 +104,13 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     companion object {
 
-        private const val BOTTOM_SHEET_FRAGMENT_ENTITY = "entity"
+        private const val BOTTOM_SHEET_WALLPAPER_ID = "BOTTOM_SHEET_WALLPAPER_ID"
 
-        fun makeArgs(id: String): Bundle {
-            return bundleOf(BOTTOM_SHEET_FRAGMENT_ENTITY to id)
-        }
+        fun create(id: String) =
+            WallpapersBottomSheet().apply {
+                arguments = Bundle().apply {
+                    putString(BOTTOM_SHEET_WALLPAPER_ID, id)
+                }
+            }
     }
 }

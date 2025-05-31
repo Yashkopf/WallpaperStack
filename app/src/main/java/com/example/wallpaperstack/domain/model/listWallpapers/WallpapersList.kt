@@ -1,7 +1,7 @@
 package com.example.wallpaperstack.domain.model.listWallpapers
 
-data class Wallpapers(
+data class WallpapersList(
 
-    val data: List<WallpaperInfo>,
+    val data: List<WallpapersListDetails>,
     val meta: MetaData?,
 )

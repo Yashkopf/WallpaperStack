@@ -2,9 +2,9 @@ package com.example.wallpaperstack.data.network.model.itemWallpapers
 
 import com.google.gson.annotations.SerializedName
 
-data class WallpaperItemResponse (
+data class WallpaperSingleResponse (
 
     @SerializedName("data")
-    val data: WallpaperItemInfoResponse,
+    val data: WallpaperSingleDetailsResponse,
 
     )

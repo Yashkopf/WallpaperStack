@@ -11,7 +11,8 @@
         android:id="@+id/ivWallpaper"
         android:layout_width="170dp"
         android:layout_height="300dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:transitionName="sharedImage"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

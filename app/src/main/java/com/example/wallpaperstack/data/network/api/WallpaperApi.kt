@@ -1,8 +1,8 @@
 package com.example.wallpaperstack.data.network.api
 
 import androidx.annotation.IntRange
-import com.example.wallpaperstack.data.network.model.itemWallpapers.WallpaperItemResponse
-import com.example.wallpaperstack.data.network.model.listWallpapers.WallpapersResponse
+import com.example.wallpaperstack.data.network.model.itemWallpapers.WallpaperSingleResponse
+import com.example.wallpaperstack.data.network.model.listWallpapers.WallpapersListResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,21 +18,19 @@ interface WallpaperApi {
         @Query("purity") purity: String = PURITY_NUMBER,
         @Query("ratios") ratios: String = RATIO,
         @Query("sorting") sorting: String? = null,
-        @Query("order") order: String? = ORDER_DESC,
         @Query("ai_art_filter") aiFilter: String = AI_FILTER,
-        @Query("page") @IntRange(from = 1) page: Int = 1,
-    ): Response<WallpapersResponse>
+        @Query("page") @IntRange(from = 1) page: Int,
+    ): Response<WallpapersListResponse>
 
     @GET("api/v1/w/{id}")
      suspend fun getWallpaperInfo(
         @Path("id") id: String,
-    ): Response<WallpaperItemResponse>
+    ): Response<WallpaperSingleResponse>
 
     companion object {
 
-        const val ORDER_DESC = "asc"
         const val CATEGORIES_NUMBER = "100"
-        const val PURITY_NUMBER = "100"
+        const val PURITY_NUMBER = "101"
         const val RATIO = "portrait"
         const val AI_FILTER = "0"
 

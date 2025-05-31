@@ -1,11 +1,13 @@
-package com.example.wallpaperstack.domain.model.listWallpapers
+package com.example.wallpaperstack.domain.model.itemWallpapers
 
 import android.os.Parcelable
+import com.example.wallpaperstack.domain.model.listWallpapers.Thumbs
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class WallpaperInfo (
+data class WallpaperSingleDetails(
     val id: String,
+    val uploader: Uploader,
     val views: Int,
     val favorites: Int,
     val purity: String,
@@ -18,4 +20,4 @@ data class WallpaperInfo (
     val path: String,
     val thumbs: Thumbs?,
     val total: Int,
-): Parcelable
+) : Parcelable

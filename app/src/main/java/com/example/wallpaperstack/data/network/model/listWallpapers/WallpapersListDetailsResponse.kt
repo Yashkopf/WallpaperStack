@@ -1,9 +1,9 @@
-package com.example.wallpaperstack.data.network.model.itemWallpapers
+package com.example.wallpaperstack.data.network.model.listWallpapers
 
-import com.example.wallpaperstack.data.network.model.listWallpapers.ThumbsResponse
+import com.example.wallpaperstack.data.network.model.itemWallpapers.UploaderResponse
 import com.google.gson.annotations.SerializedName
 
-data class WallpaperItemInfoResponse (
+data class WallpapersListDetailsResponse (
 
     @SerializedName("id")
     val id: String,
@@ -67,5 +67,4 @@ data class WallpaperItemInfoResponse (
 
     @SerializedName("total")
     val total: Int,
-
-    )
+)

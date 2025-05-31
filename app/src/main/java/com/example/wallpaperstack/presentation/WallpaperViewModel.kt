@@ -6,10 +6,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.wallpaperstack.data.network.ConnectivityManager
 import com.example.wallpaperstack.domain.model.Sorting
-import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetItemsCountUseCase
+import com.example.wallpaperstack.domain.usecases.getItemsCount.GetItemsCountUseCase
 import com.example.wallpaperstack.domain.usecases.getWallpaperList.GetWallpaperListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -23,15 +22,14 @@ class WallpaperViewModel(
     private val getItemsCountUseCase: GetItemsCountUseCase,
 ) : ViewModel() {
 
-    private val sorting = MutableStateFlow(Sorting.HOT)
+    private val sorting = MutableStateFlow(Sorting.DATE_ADDED)
     private val currentQuery = MutableStateFlow<String?>(null)
 
     private val _buttonState =
-        MutableStateFlow<Pair<Int, Int>>(UNSELECTED_VALUE to Sorting.HOT.ordinal)
+        MutableStateFlow<Pair<Int, Int>>(UNSELECTED_VALUE to Sorting.DATE_ADDED.ordinal)
     val buttonState: StateFlow<Pair<Int, Int>> = _buttonState
 
     val connectivity = connectivityManager.connectionAsStateFlow
-
     val wallpapersList = combine(sorting, currentQuery) { sorting, query ->
         Pair(sorting, query)
     }.flatMapLatest { (sorting, query) ->

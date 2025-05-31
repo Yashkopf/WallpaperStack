@@ -11,18 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
 import com.example.wallpaperstack.databinding.FragmentHomeBinding
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
+import com.example.wallpaperstack.presentation.utils.Empty
 import com.example.wallpaperstack.presentation.utils.MarginItemDecoration
 import com.example.wallpaperstack.presentation.utils.getCustomColor
 import kotlinx.coroutines.Dispatchers
@@ -35,17 +38,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : Fragment() {
 
     private val viewModel: WallpaperViewModel by viewModel()
-
     private var binding: FragmentHomeBinding? = null
-
     private var recyclerViewState: Parcelable? = null
-
     private var gridLayoutManager: GridLayoutManager? = null
     private var recyclerView: RecyclerView? = null
-
     private var buttons: List<TextView>? = null
     private var adapter: WallpaperAdapter? = null
-
     private var searchView: SearchView? = null
     private var currentColor: Int? = null
 
@@ -55,6 +53,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding?.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,8 +126,9 @@ class HomeFragment : Fragment() {
                 ArgbEvaluator(), applyAlphaToColor(fromColor, 77),
                 applyAlphaToColor(toColor, 77)
             )
-//        if (currentColor != newColor){
+        if (currentColor != newColor) {
             colorAnimation.duration = 1500
+        }
 
         colorAnimation.addUpdateListener { animator ->
             val animatedColor = animator.animatedValue as Int
@@ -140,22 +140,23 @@ class HomeFragment : Fragment() {
 
     private fun getBackgroundColor(index: Int): Int {
         return when (index) {
-            0 -> R.color.hot_sorting
-            1 -> R.color.relevance_sorting
+            0 -> R.color.date_added_sorting
+            1 -> R.color.hot_sorting
             2 -> R.color.favorite_sorting
             3 -> R.color.random_sorting
             4 -> R.color.views_sorting
-            else -> R.color.hot_sorting
+            else -> R.color.date_added_sorting
         }
     }
 
     private fun initRecyclerView() {
         recyclerView = binding?.rvWallpapers
-        gridLayoutManager = GridLayoutManager(requireContext(), 2)
+        gridLayoutManager =
+            GridLayoutManager(requireContext(), WALLPAPERS_GRID_SPAN_COUNT)
 
         adapter = WallpaperAdapter(
-            onItemClick = { item, view ->
-                launchDetailFragment(item, view)
+            onItemClick = { item ->
+                launchDetailFragment(item)
             },
             onItemLongClick = { id ->
                 launchBottomSheetFragment(id)
@@ -193,40 +194,31 @@ class HomeFragment : Fragment() {
         recyclerViewState = recyclerView?.layoutManager?.onSaveInstanceState()
     }
 
-    private fun launchDetailFragment(id: Parcelable, clickedView: View) {
-        val animation = NavOptions.Builder()
-        animation.setEnterAnim(R.anim.zoom_enter)
+    private fun launchDetailFragment(item: Parcelable) {
 
-        val location = IntArray(2)
-        clickedView.getLocationOnScreen(location)
-
-        val startX = location[0].toFloat() + clickedView.width / 2
-        val startY = location[1].toFloat() + clickedView.height / 2
-
-        // Pass position as arguments
-        val args = DetailFragment.makeArgs(id).apply {
-            putFloat("pivotX", startX)
-            putFloat("pivotY", startY)
-        }
+        val args = DetailFragment.makeArgs(item)
         findNavController().navigate(
             R.id.detailFragment,
-            args
+            args,
+            navOptions {
+                anim {
+                    popExit = R.anim.slide_right
+                    enter = R.anim.zoom_enter
+                    exit = R.anim.zoom_exit
+                }
+            }
         )
     }
 
     private fun launchBottomSheetFragment(id: String) {
-        val args = BottomSheetFragment.makeArgs(id)
-        val dialog = BottomSheetFragment().apply {
-            this.arguments = args
-        }
-        dialog.show(this.parentFragmentManager, "entity")
+        WallpapersBottomSheet.create(id).show(parentFragmentManager, null)
     }
 
     private fun changeSorting() {
 
         buttons = listOfNotNull(
+            binding?.dateAdded,
             binding?.hot,
-            binding?.relevance,
             binding?.favorite,
             binding?.random,
             binding?.views
@@ -248,8 +240,8 @@ class HomeFragment : Fragment() {
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.searchWallpapers(query.toString().trim())
-                binding?.rvWallpapers?.smoothScrollToPosition(0)
-                viewModel.sortWallpapers(1)
+                binding?.rvWallpapers?.smoothScrollToPosition(Empty.INT)
+                viewModel.sortWallpapers(Empty.INT)
                 searchView?.clearFocus()
                 return true
             }
@@ -259,7 +251,7 @@ class HomeFragment : Fragment() {
             }
         })
         clearButton?.setOnClickListener { v ->
-            viewModel.searchWallpapers("")
+            viewModel.searchWallpapers(Empty.STRING)
             searchView?.clearFocus()
             searchView?.setQuery(null, false)
         }
@@ -271,7 +263,7 @@ class HomeFragment : Fragment() {
                 connectivityStateColor(isOnline)
                 if (isOnline) {
                     binding?.connectionView?.animate()
-                        ?.alpha(0f)
+                        ?.alpha(Empty.FLOAT)
                         ?.setDuration(3000)
                         ?.withEndAction { binding?.connectionView?.visibility = View.GONE }
                         ?.start()
@@ -279,7 +271,7 @@ class HomeFragment : Fragment() {
                 } else {
                     binding?.connectionView?.animate()?.cancel()
                     binding?.connectionView?.clearAnimation()
-                    binding?.connectionView?.alpha = 1f
+                    binding?.connectionView?.alpha = ALPHA_ON
                     binding?.connectionView?.visibility = View.VISIBLE
                 }
             }
@@ -300,16 +292,22 @@ class HomeFragment : Fragment() {
 
     private fun renderRecyclerState() {
         adapter?.addLoadStateListener { states ->
-            if (states.isIdle) {
-                hideShimmer()
-            } else {
-                showShimmer()
+            when (states.refresh) {
+                is LoadState.Error -> Toast.makeText(
+                    requireContext(),
+                    "Error loading",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                LoadState.Loading -> showShimmer()
+                is LoadState.NotLoading -> hideShimmer()
             }
         }
     }
 
     private fun showShimmer() {
         binding?.shimmerLayout?.startShimmer()
+        binding?.swipeToRefreshLayout?.isEnabled = false
     }
 
     private fun hideShimmer() {
@@ -322,6 +320,7 @@ class HomeFragment : Fragment() {
         binding?.searchLayout?.visibility = View.VISIBLE
         binding?.backgroundGradient?.visibility = View.VISIBLE
         binding?.tvCountResults?.visibility = View.VISIBLE
+        binding?.swipeToRefreshLayout?.isEnabled = true
     }
 
     private fun swipeToRefresh() {
@@ -340,5 +339,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    companion object {
+        const val ALPHA_ON = 1f
+        const val WALLPAPERS_GRID_SPAN_COUNT = 2
     }
 }

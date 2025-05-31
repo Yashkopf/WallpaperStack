@@ -5,7 +5,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.WallpaperStack" parent="Base.Theme.WallpaperStack" />
+    <style name="Theme.WallpaperStack" parent="Base.Theme.WallpaperStack" >
+        <item name="android:windowBackground">@color/home_background</item>
+    </style>
 
 <!--    <style name="TransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
 <!--        <item name="android:windowBackground">@android:color/transparent</item>-->

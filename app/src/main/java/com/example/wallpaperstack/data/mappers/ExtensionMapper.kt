@@ -3,17 +3,17 @@ package com.example.wallpaperstack.data.mappers
 import com.example.wallpaperstack.data.network.model.listWallpapers.ThumbsResponse
 import com.example.wallpaperstack.data.network.model.itemWallpapers.UploaderAvatarResponse
 import com.example.wallpaperstack.data.network.model.itemWallpapers.UploaderResponse
-import com.example.wallpaperstack.data.network.model.listWallpapers.WallpaperInfoResponse
-import com.example.wallpaperstack.data.network.model.itemWallpapers.WallpaperItemResponse
+import com.example.wallpaperstack.data.network.model.listWallpapers.WallpapersListDetailsResponse
+import com.example.wallpaperstack.data.network.model.itemWallpapers.WallpaperSingleResponse
 import com.example.wallpaperstack.domain.model.listWallpapers.Thumbs
 import com.example.wallpaperstack.domain.model.itemWallpapers.Uploader
 import com.example.wallpaperstack.domain.model.itemWallpapers.UploaderAvatar
-import com.example.wallpaperstack.domain.model.itemWallpapers.WallpaperItemInfo
-import com.example.wallpaperstack.domain.model.listWallpapers.WallpaperInfo
+import com.example.wallpaperstack.domain.model.itemWallpapers.WallpaperSingleDetails
+import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
 
 
-internal fun WallpaperInfoResponse.toWallpapersInfo(): WallpaperInfo {
-    return WallpaperInfo(
+internal fun WallpapersListDetailsResponse.toWallpapersInfo(): WallpapersListDetails {
+    return WallpapersListDetails(
         id = id,
         views = views,
         favorites = favorites,
@@ -30,8 +30,8 @@ internal fun WallpaperInfoResponse.toWallpapersInfo(): WallpaperInfo {
     )
 }
 
-internal fun WallpaperItemResponse.toWallTest(): WallpaperItemInfo {
-    return WallpaperItemInfo(
+internal fun WallpaperSingleResponse.toWallpapers(): WallpaperSingleDetails {
+    return WallpaperSingleDetails(
         id = this.data.id,
         uploader = this.data.uploader.toUploader(),
         views = this.data.views,

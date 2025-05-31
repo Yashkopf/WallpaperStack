@@ -1,20 +1,20 @@
 package com.example.wallpaperstack.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.wallpaperstack.domain.model.listWallpapers.WallpaperInfo
+import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
 
-class WallpaperDiffCallback : DiffUtil.ItemCallback<WallpaperInfo>() {
+class WallpaperDiffCallback : DiffUtil.ItemCallback<WallpapersListDetails>() {
 
     override fun areItemsTheSame(
-        oldItem: WallpaperInfo,
-        newItem: WallpaperInfo,
+        oldItem: WallpapersListDetails,
+        newItem: WallpapersListDetails,
     ): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
-        oldItem: WallpaperInfo,
-        newItem: WallpaperInfo,
+        oldItem: WallpapersListDetails,
+        newItem: WallpapersListDetails,
     ): Boolean {
         return oldItem.thumbs?.original == newItem.thumbs?.original
                 && oldItem.favorites == newItem.favorites

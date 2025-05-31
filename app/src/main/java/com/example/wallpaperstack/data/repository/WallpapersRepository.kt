@@ -2,14 +2,14 @@ package com.example.wallpaperstack.data.repository
 
 import androidx.paging.PagingData
 import com.example.wallpaperstack.domain.model.Sorting
-import com.example.wallpaperstack.domain.model.itemWallpapers.WallpaperItemInfo
-import com.example.wallpaperstack.domain.model.listWallpapers.WallpaperInfo
+import com.example.wallpaperstack.domain.model.itemWallpapers.WallpaperSingleDetails
+import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
 import kotlinx.coroutines.flow.Flow
 
 interface WallpapersRepository {
 
     val itemsCount: Flow<Int?>
-    fun getWallpapersList(sorting: Sorting, query: String?): Flow<PagingData<WallpaperInfo>>
-    suspend fun getWallpaperInfo(id: String): Result<WallpaperItemInfo?>
+    fun getWallpapersList(sorting: Sorting, query: String?): Flow<PagingData<WallpapersListDetails>>
+    suspend fun getWallpaperInfo(id: String): Result<WallpaperSingleDetails?>
 
 }

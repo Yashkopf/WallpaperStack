@@ -6,8 +6,8 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/secondmain"
+    android:orientation="vertical"
     tools:context=".presentation.HomeFragment">
 
     <ImageView
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_gradient"
-        android:visibility="gone"/>
+        android:visibility="invisible" />
 
     <LinearLayout
         android:id="@+id/main"
@@ -43,6 +43,19 @@
                 android:paddingHorizontal="8dp">
 
                 <TextView
+                    android:id="@+id/dateAdded"
+                    style="@style/Sorted.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="4dp"
+                    android:background="@drawable/rounded_views"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/category_date_add" />
+
+                <TextView
                     android:id="@+id/hot"
                     style="@style/Sorted.Button"
                     android:layout_width="wrap_content"
@@ -54,19 +67,6 @@
                     android:paddingVertical="8dp"
                     android:scrollHorizontally="true"
                     android:text="@string/category_hot" />
-
-                <TextView
-                    android:id="@+id/relevance"
-                    style="@style/Sorted.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/rounded_views"
-                    android:paddingHorizontal="24dp"
-                    android:paddingVertical="8dp"
-                    android:scrollHorizontally="true"
-                    android:text="@string/category_relevance" />
 
                 <TextView
                     android:id="@+id/favorite"
@@ -131,22 +131,26 @@
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/tvCountResults"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:paddingStart="24dp"
-            android:textColor="#BABABA"
-            tools:text="test"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeToRefreshLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvCountResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingStart="24dp"
+                android:textColor="#BABABA"
+                android:visibility="gone"
+                tools:text="test"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWallpapers"
@@ -156,7 +160,11 @@
                 android:visibility="gone"
                 tools:itemCount="4"
                 tools:listitem="@layout/item_wallpaper"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                android:transitionName="sharedImage"/>
+
+            </LinearLayout>
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
