@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
@@ -324,7 +325,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun swipeToRefresh() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
             binding?.swipeToRefreshLayout?.setOnRefreshListener {
                 adapter?.refresh()
