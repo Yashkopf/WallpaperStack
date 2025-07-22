@@ -1,4 +1,4 @@
-package com.example.wallpaperstack.presentation
+package com.example.wallpaperstack.presentation.features.bottom_sheet_details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.wallpaperstack.databinding.BottomsheetFragmentBinding
+import com.example.wallpaperstack.databinding.BottomsheetDetailsFragmentBinding
 import com.example.wallpaperstack.presentation.adapters.BottomSheetAdapter
 import com.example.wallpaperstack.presentation.model.ItemInfo
 import com.example.wallpaperstack.presentation.utils.formatDate
@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WallpapersBottomSheet : BottomSheetDialogFragment() {
+class BottomSheetDetailsFragment : BottomSheetDialogFragment() {
 
-    private var binding: BottomsheetFragmentBinding? = null
+    private var binding: BottomsheetDetailsFragmentBinding? = null
     private var recyclerView: RecyclerView? = null
     private var adapter: BottomSheetAdapter? = null
     private val viewModel: BottomSheetFragmentViewModel by viewModel()
@@ -31,7 +31,7 @@ class WallpapersBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = BottomsheetFragmentBinding.inflate(inflater, container, false)
+        binding = BottomsheetDetailsFragmentBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -107,7 +107,7 @@ class WallpapersBottomSheet : BottomSheetDialogFragment() {
         private const val BOTTOM_SHEET_WALLPAPER_ID = "BOTTOM_SHEET_WALLPAPER_ID"
 
         fun create(id: String) =
-            WallpapersBottomSheet().apply {
+            BottomSheetDetailsFragment().apply {
                 arguments = Bundle().apply {
                     putString(BOTTOM_SHEET_WALLPAPER_ID, id)
                 }

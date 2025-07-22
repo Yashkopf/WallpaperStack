@@ -1,10 +1,11 @@
-package com.example.wallpaperstack.presentation
+package com.example.wallpaperstack.presentation.features.home_screen
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,6 +27,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wallpaperstack.R
 import com.example.wallpaperstack.databinding.FragmentHomeBinding
 import com.example.wallpaperstack.presentation.adapters.WallpaperAdapter
+import com.example.wallpaperstack.presentation.features.bottom_sheet_details.BottomSheetDetailsFragment
+import com.example.wallpaperstack.presentation.features.bottom_sheet_settings.BottomSheetSettingsFragment
+import com.example.wallpaperstack.presentation.features.detail_screen.DetailFragment
 import com.example.wallpaperstack.presentation.utils.Empty
 import com.example.wallpaperstack.presentation.utils.MarginItemDecoration
 import com.example.wallpaperstack.presentation.utils.getCustomColor
@@ -37,7 +42,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: WallpaperViewModel by viewModel()
+    private val viewModel: HomeViewModel by viewModel()
     private var binding: FragmentHomeBinding? = null
     private var recyclerViewState: Parcelable? = null
     private var gridLayoutManager: GridLayoutManager? = null
@@ -66,6 +71,9 @@ class HomeFragment : Fragment() {
         changeSorting()
         initObservers()
         swipeToRefresh()
+        launchBottomSheetSettingsFragment()
+//        onScrollListenerSearchBar()
+        onScrollListenerFAB()
     }
 
     private fun initObservers() {
@@ -85,8 +93,7 @@ class HomeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.buttonState.collectLatest { (oldValue, newValue) ->
-
-                if (oldValue == newValue) return@collectLatest
+                changeBackgroundSorting(newValue, oldValue)
                 buttons?.get(newValue)?.backgroundTintList =
                     ColorStateList.valueOf(
                         requireContext()
@@ -99,7 +106,6 @@ class HomeFragment : Fragment() {
                                 .getCustomColor(R.color.default_button_state)
                         )
                 }
-                changeBackgroundSorting(newValue, oldValue)
             }
         }
     }
@@ -159,7 +165,7 @@ class HomeFragment : Fragment() {
                 launchDetailFragment(item)
             },
             onItemLongClick = { id ->
-                launchBottomSheetFragment(id)
+                launchBottomSheetDetailsFragment(id)
             }
         )
 
@@ -172,12 +178,6 @@ class HomeFragment : Fragment() {
                 )
             )
         )
-
-        recyclerView?.post {
-            recyclerViewState?.let {
-                recyclerView?.layoutManager?.onRestoreInstanceState(it)
-            }
-        }
     }
 
     override fun onResume() {
@@ -196,7 +196,7 @@ class HomeFragment : Fragment() {
 
     private fun launchDetailFragment(item: Parcelable) {
 
-        val args = DetailFragment.makeArgs(item)
+        val args = DetailFragment.Companion.makeArgs(item)
         findNavController().navigate(
             R.id.detailFragment,
             args,
@@ -210,8 +210,43 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private fun launchBottomSheetFragment(id: String) {
-        WallpapersBottomSheet.create(id).show(parentFragmentManager, null)
+    private fun launchBottomSheetDetailsFragment(id: String) {
+        BottomSheetDetailsFragment.Companion.create(id).show(parentFragmentManager, null)
+    }
+
+    private fun launchBottomSheetSettingsFragment() {
+        binding?.fabSettings?.setOnClickListener { v ->
+            BottomSheetSettingsFragment(
+                onChangePurity = { purity ->
+                    viewModel.updatePurity(purity)
+                },
+                onChangeCategory = { category ->
+                    viewModel.updateCategory(category)
+                }
+            ).show(parentFragmentManager, null)
+        }
+    }
+
+    private fun onScrollListenerFAB() {
+
+        val recycler = binding?.rvWallpapers
+        val floatActionButton = binding?.fabSettings
+        var offset = 0
+
+        recycler?.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+
+            if (floatActionButton == null) return@setOnScrollChangeListener
+
+            val layoutMargin = floatActionButton.marginBottom
+            val maxOffset = (floatActionButton.height + layoutMargin)
+
+            offset = (offset - oldScrollY / 2).coerceIn(0, maxOffset)
+
+            floatActionButton.translationY = offset.toFloat()
+            if (offset > maxOffset) floatActionButton.visibility = View.GONE
+            if (offset < maxOffset) floatActionButton.visibility = View.VISIBLE
+
+        }
     }
 
     private fun changeSorting() {
@@ -324,7 +359,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun swipeToRefresh() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
             binding?.swipeToRefreshLayout?.setOnRefreshListener {
                 adapter?.refresh()

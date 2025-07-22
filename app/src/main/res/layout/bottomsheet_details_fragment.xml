@@ -35,39 +35,39 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Author"
-                android:textSize="12sp"
                 android:layout_gravity="center_vertical"
-                android:textColor="#A0A0A0" />
+                android:text="Author"
+                android:textColor="#A0A0A0"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="test"
                 android:layout_gravity="bottom"
-                android:textColor="#84AFAF" />
+                android:textColor="#84AFAF"
+                tools:text="test" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivUserAvatar"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_gravity="end"
-                tools:background="@color/white"/>
+                tools:background="@color/white" />
         </FrameLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_marginTop="12dp"
             android:layout_height="2dp"
-            android:background="#646464"/>
+            android:layout_marginTop="12dp"
+            android:background="#646464" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBottomSheetDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            tools:listitem="@layout/bottomsheet_item" />
+            tools:listitem="@layout/bottomsheet_details_item" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnShowSimilar"
@@ -75,6 +75,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/default_button_state"
+            android:drawableLeft="@drawable/baseline_settings_24"
+            android:drawableTint="@color/white"
             tools:text="Show similar" />
 
     </LinearLayout>

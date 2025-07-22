@@ -31,7 +31,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            val apiKey: String = project.findProperty("API_KEY") as String? ?: ""
             val prop = Properties().apply{
                 load(FileInputStream(File(rootProject.rootDir,"local.properties")))
             }

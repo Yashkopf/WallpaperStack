@@ -22,6 +22,8 @@ class WallpapersRepositoryImpl(
     override fun getWallpapersList(
         sorting: Sorting,
         query: String?,
+        purity: String,
+        categories: String,
     ): Flow<PagingData<WallpapersListDetails>> {
         return Pager(
             config = PagingConfig(
@@ -30,9 +32,15 @@ class WallpapersRepositoryImpl(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                WallpapersPagingSource(wallpaperApi, sorting, query, onItemsCountChange = {
-                    itemsCount.value = it
-                })
+                WallpapersPagingSource(
+                    wallpaperApi = wallpaperApi,
+                    sorting = sorting,
+                    query = query,
+                    purity = purity,
+                    categories = categories,
+                    onItemsCountChange = {
+                        itemsCount.value = it
+                    })
             }
         ).flow
     }
