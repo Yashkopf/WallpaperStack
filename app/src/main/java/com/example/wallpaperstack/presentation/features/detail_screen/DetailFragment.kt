@@ -1,4 +1,4 @@
-package com.example.wallpaperstack.presentation
+package com.example.wallpaperstack.presentation.features.detail_screen
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wallpaperstack.databinding.FragmentDetailBinding
 import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
+import com.example.wallpaperstack.presentation.features.bottom_sheet_details.BottomSheetDetailsFragment
 
 class DetailFragment : Fragment() {
 
@@ -56,7 +57,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun launchBottomSheetFragment(id: String) {
-        WallpapersBottomSheet.create(id).show(parentFragmentManager, null)
+        BottomSheetDetailsFragment.Companion.create(id).show(parentFragmentManager, null)
     }
 
     override fun onDestroyView() {

@@ -30,7 +30,7 @@ interface WallpaperApi {
     companion object {
 
         const val CATEGORIES_NUMBER = "100"
-        const val PURITY_NUMBER = "101"
+        const val PURITY_NUMBER = "100"
         const val RATIO = "portrait"
         const val AI_FILTER = "0"
 

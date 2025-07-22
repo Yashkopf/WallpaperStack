@@ -6,11 +6,16 @@ import com.example.wallpaperstack.domain.model.Sorting
 import com.example.wallpaperstack.domain.model.listWallpapers.WallpapersListDetails
 import kotlinx.coroutines.flow.Flow
 
-class GetWallpaperListUseCaseImpl (
+class GetWallpaperListUseCaseImpl(
     private val repository: WallpapersRepository,
 ) : GetWallpaperListUseCase {
 
-    override fun invoke(sorting: Sorting, query: String?): Flow<PagingData<WallpapersListDetails>> {
-        return repository.getWallpapersList(sorting, query)
+    override fun invoke(
+        sorting: Sorting,
+        query: String?,
+        purity: String,
+        categories: String,
+    ): Flow<PagingData<WallpapersListDetails>> {
+        return repository.getWallpapersList(sorting, query, purity, categories)
     }
 }
