@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.wallpaperstack.databinding.BottomsheetItemBinding
+import com.example.wallpaperstack.databinding.BottomsheetDetailsItemBinding
 import com.example.wallpaperstack.presentation.model.ItemInfo
 
 class BottomSheetAdapter():
@@ -15,7 +15,7 @@ class BottomSheetAdapter():
         viewType: Int,
     ): BottomSheetViewHolder{
         return BottomSheetViewHolder(
-            BottomsheetItemBinding.inflate(LayoutInflater.from(parent.context),
+            BottomsheetDetailsItemBinding.inflate(LayoutInflater.from(parent.context),
                 parent, false)
         )
     }

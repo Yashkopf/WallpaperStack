@@ -57,8 +57,7 @@ class ConnectivityManager(context: Context) {
                 val netCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
                 (netCapabilities != null
                         && netCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                        && netCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-                        && netCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
+                        && netCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
             }
         }
 

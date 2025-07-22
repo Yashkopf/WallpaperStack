@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/secondmain"
     android:orientation="vertical"
-    tools:context=".presentation.HomeFragment">
+    tools:context=".presentation.features.home_screen.HomeFragment">
 
     <ImageView
         android:id="@+id/backgroundGradient"
@@ -16,6 +16,16 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_gradient"
         android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Settings"
+        android:layout_gravity="end|bottom"
+        app:fabSize="mini"
+        android:layout_margin="16dp"
+        android:src="@drawable/baseline_settings_24" />
 
     <LinearLayout
         android:id="@+id/main"
@@ -117,6 +127,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:visibility="invisible"
+            android:animateLayoutChanges="true"
             tools:visibility="visible">
 
             <androidx.appcompat.widget.SearchView
@@ -127,6 +138,7 @@
                 android:background="@drawable/rounded_views"
                 android:backgroundTint="#27000000"
                 android:theme="@style/SearchViewStyle"
+                android:animateLayoutChanges="true"
                 app:iconifiedByDefault="false" />
 
         </FrameLayout>
@@ -168,7 +180,6 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
-
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"

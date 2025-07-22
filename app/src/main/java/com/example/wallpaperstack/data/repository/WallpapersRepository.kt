@@ -9,7 +9,13 @@ import kotlinx.coroutines.flow.Flow
 interface WallpapersRepository {
 
     val itemsCount: Flow<Int?>
-    fun getWallpapersList(sorting: Sorting, query: String?): Flow<PagingData<WallpapersListDetails>>
+    fun getWallpapersList(
+        sorting: Sorting,
+        query: String?,
+        purity: String,
+        categories: String,
+    ): Flow<PagingData<WallpapersListDetails>>
+
     suspend fun getWallpaperInfo(id: String): Result<WallpaperSingleDetails?>
 
 }

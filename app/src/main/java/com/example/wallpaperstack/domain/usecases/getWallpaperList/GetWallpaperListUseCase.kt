@@ -7,5 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetWallpaperListUseCase {
 
-    operator fun invoke(sorting: Sorting, query: String?): Flow<PagingData<WallpapersListDetails>>
+    operator fun invoke(
+        sorting: Sorting,
+        query: String?,
+        purity: String,
+        categories: String): Flow<PagingData<WallpapersListDetails>>
 }

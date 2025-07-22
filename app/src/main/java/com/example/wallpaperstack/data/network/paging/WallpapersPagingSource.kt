@@ -12,6 +12,8 @@ class WallpapersPagingSource(
     private val wallpaperApi: WallpaperApi,
     private val sorting: Sorting,
     private val query: String?,
+    private val purity: String,
+    private val categories: String,
     private val onItemsCountChange: (Int?) -> Unit
 ) : PagingSource<Int, WallpapersListDetails>() {
 
@@ -26,7 +28,7 @@ class WallpapersPagingSource(
         try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val response = wallpaperApi.getListOfWallpapers(
-                searchQuery = query, page = pageNumber, sorting = sorting.value)
+                searchQuery = query, page = pageNumber, sorting = sorting.value, purity = purity, categories = categories)
 
             if (response.isSuccessful) {
                 val itemsCount = response.body()?.meta?.total
