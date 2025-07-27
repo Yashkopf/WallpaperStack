@@ -1,15 +1,16 @@
 package com.example.wallpaperstack
 
 import android.app.Application
-import com.example.wallpaperstack.di.modules.networkModule
-import com.example.wallpaperstack.di.modules.preferencesModule
-import com.example.wallpaperstack.di.modules.repositoryModule
-import com.example.wallpaperstack.di.modules.useCaseModule
-import com.example.wallpaperstack.di.modules.viewModelModule
+import com.example.data.di.networkModule
+import com.example.data.di.preferencesModule
+import com.example.presentation.di.viewModelModule
+import com.example.data.di.repositoryModule
+import com.example.domain.di.useCaseModule
+
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App: Application() {
+internal class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
