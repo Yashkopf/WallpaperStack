@@ -7,15 +7,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -71,8 +74,9 @@ internal class HomeFragment : Fragment() {
         initObservers()
         swipeToRefresh()
         launchBottomSheetSettingsFragment()
-//        onScrollListenerSearchBar()
+        onScrollListenerSearchBar()
         onScrollListenerFAB()
+        showNumberOfWallpapers()
     }
 
     private fun initObservers() {
@@ -230,7 +234,7 @@ internal class HomeFragment : Fragment() {
 
         val recycler = binding?.rvWallpapers
         val floatActionButton = binding?.fabSettings
-        var offset = 0
+        var offset = Empty.INT
 
         recycler?.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
 
@@ -238,13 +242,68 @@ internal class HomeFragment : Fragment() {
 
             val layoutMargin = floatActionButton.marginBottom
             val maxOffset = (floatActionButton.height + layoutMargin)
-
-            offset = (offset - oldScrollY / 2).coerceIn(0, maxOffset)
+            offset = (offset - oldScrollY / 2).coerceIn(Empty.INT, maxOffset)
 
             floatActionButton.translationY = offset.toFloat()
             if (offset > maxOffset) floatActionButton.visibility = View.GONE
             if (offset < maxOffset) floatActionButton.visibility = View.VISIBLE
 
+        }
+    }
+
+    private fun onScrollListenerSearchBar() {
+        val recycler = binding?.rvWallpapers
+        val searchView = binding?.searchLayout
+        var currentHeight = Empty.INT
+
+        searchView?.post {
+            currentHeight = searchView.height
+            val searchViewHeight = searchView.height
+
+            recycler?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(
+                    recyclerView: RecyclerView,
+                    dx: Int,
+                    dy: Int,
+                ) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val minHeight = Empty.INT
+                    val maxHeight = searchViewHeight
+
+                    currentHeight -= dy.div(2)
+                    currentHeight = currentHeight.coerceIn(minHeight, maxHeight)
+
+                    val layoutParams = searchView.layoutParams
+                    layoutParams.height = currentHeight
+                    searchView.layoutParams = layoutParams
+                }
+            })
+        }
+    }
+
+    private fun showNumberOfWallpapers() {
+
+        val searchView = binding?.searchQuery
+        val resultsCountView = binding?.tvCountResults
+
+        searchView?.post {
+
+            val searchViewLocation = IntArray(2)
+            searchView.getLocationOnScreen(searchViewLocation)
+
+            val searchBottomY = searchViewLocation[1] + searchView.height
+
+            resultsCountView?.x = searchView.x
+            resultsCountView?.y = searchBottomY + 8f
+        }
+
+        resultsCountView?.post {
+            resultsCountView.animate().alpha(1f).setDuration(200).start()
+            resultsCountView.postDelayed({
+                resultsCountView.animate().alpha(0f).setDuration(500).withEndAction {
+                    resultsCountView.visibility = View.GONE
+                }.start()
+            }, 4000)
         }
     }
 
@@ -261,6 +320,7 @@ internal class HomeFragment : Fragment() {
         buttons?.forEachIndexed { index, button ->
             button.setOnClickListener { view ->
                 viewModel.sortWallpapers(index)
+                showNumberOfWallpapers()
             }
         }
     }

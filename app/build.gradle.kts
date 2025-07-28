@@ -1,10 +1,7 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -55,9 +52,9 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    implementation(Dependencies.koinAndroid)
-    implementation(Dependencies.koinCompat)
-    implementation(Dependencies.koinNavigation)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compat)
+    implementation(libs.koin.navigation)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

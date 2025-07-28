@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
-    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -43,10 +43,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(Dependencies.koinAndroid)
-    implementation(Dependencies.koinNavigation)
-    implementation(Dependencies.koinCompat)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compat)
+    implementation(libs.koin.navigation)
 
-    implementation(Dependencies.pagingCompose)
-    implementation(Dependencies.pagingRuntime)
+    implementation(libs.pagingRuntime)
+    implementation(libs.pagingCompose)
 }
