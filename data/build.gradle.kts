@@ -5,7 +5,7 @@ import kotlin.apply
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -69,17 +69,16 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(Dependencies.okHttp)
-    implementation(Dependencies.okHttpLoggingInterceptor)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
 
-    implementation(Dependencies.retrofit)
+    implementation(libs.retrofit2)
+    implementation(libs.converter.gson)
 
-    implementation(Dependencies.koinCompat)
-    implementation(Dependencies.koinNavigation)
-    implementation(Dependencies.koinAndroid)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compat)
+    implementation(libs.koin.navigation)
 
-    implementation(Dependencies.gsonConverter)
-
-    implementation(Dependencies.pagingRuntime)
-    implementation(Dependencies.pagingCompose)
+    implementation(libs.pagingCompose)
+    implementation(libs.pagingRuntime)
 }

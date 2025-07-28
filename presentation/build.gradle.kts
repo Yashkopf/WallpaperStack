@@ -1,14 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
-    id("kotlin-parcelize")
-    id("androidx.navigation.safeargs")
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
     namespace = "com.example.presentation"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -53,24 +53,24 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(Dependencies.koinNavigation)
-    implementation(Dependencies.koinCompat)
-    implementation(Dependencies.koinAndroid)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compat)
+    implementation(libs.koin.navigation)
 
-    implementation(Dependencies.coroutinesAndroid)
-    implementation(Dependencies.coroutinesCore)
+    implementation(libs.coroutinesCore)
+    implementation(libs.coroutinesAndroid)
 
-    implementation(Dependencies.facebookShimmer)
+    implementation(libs.facebook.shimmer)
 
-    implementation(Dependencies.glideBumpTech)
-    kapt(Dependencies.glideCompiler)
-    implementation(Dependencies.glideTransformations)
+    implementation(libs.glide.bumptech)
+    kapt(libs.glide.compiler)
+    implementation(libs.glide.transformations)
 
-    implementation(Dependencies.navigationFragment)
-    implementation(Dependencies.navigationUi)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
-    implementation(Dependencies.swipeToRefresh)
+    implementation(libs.swipeToRefresh)
 
-    implementation(Dependencies.pagingCompose)
-    implementation(Dependencies.pagingRuntime)
+    implementation(libs.pagingCompose)
+    implementation(libs.pagingRuntime)
 }
